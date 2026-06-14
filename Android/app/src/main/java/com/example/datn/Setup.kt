@@ -172,7 +172,7 @@ fun SetupUI() {
                         }
                         else {
                             Log.d("Signin Info", "Email: ${temp_email.value}, Password: ${temp_pw.value}")
-                            register_User(context, temp_email.value, temp_pw.value)
+                            registerUser(context, temp_email.value, temp_pw.value)
                         }
 
                     }
