@@ -264,7 +264,7 @@ fun DeleteNoti(){
 
 fun Test() {
     Log.d("Test", "Test")
-    //loginUser("ducbuivan2003@gmail.com", "0347495054")
+    //login_User("ducbuivan2003@gmail.com", "ducbuivan372003")
    // roomList.add(Room(id=1234, name="Phong test", devices=mutableListOf()))
     getDeviceUpdate()
     haveNotis.value= !isNotiEmpty()
