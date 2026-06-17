@@ -14,11 +14,11 @@ class RFID_Door {
       /*
   VCC    3.3V
   GND    GND
-  SCK    18 YELLOW
-  MOSI   23 WHITE
-  MISO   19 GREEN
-  SDA/SS 5 ORANGE
-  RST    15 BLUE
+  SCK    18 
+  MOSI   23 
+  MISO   19 
+  SDA/SS 5 
+  RST    15 
   */
 private:
     int SERVO;
