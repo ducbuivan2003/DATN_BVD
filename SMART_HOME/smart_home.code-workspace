@@ -4,9 +4,6 @@
 			"path": "smart_home"
 		},
 		{
-			"path": "assistant"
-		},
-		{
 			"path": "door"
 		}
 	],
