@@ -67,7 +67,7 @@ public:
             }
     
         }
-    bool getDectectedGas() { // Lấy trạng thái phát hiện gas
+    bool get_detected_gas() { // Lấy trạng thái phát hiện gas
     return dectectedGas;
 }
 bool isNeedTurnFan() { // Kiểm tra cần tắt quạt

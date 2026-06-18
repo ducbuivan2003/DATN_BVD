@@ -37,7 +37,7 @@ void toggleFan() { // Đảo trạng thái quạt
         turnOnFan();
     }
 }
-void sendStateToFirebase() { // Gửi trạng thái quạt lên Firebase
+void send_state_to_fb() { // Gửi trạng thái quạt lên Firebase
     // Chuyển trạng thái bool sang chuỗi
     String state = getMainState() ? "on" : "off";
     // Upload trạng thái lên Firebase
@@ -45,7 +45,7 @@ void sendStateToFirebase() { // Gửi trạng thái quạt lên Firebase
 }
 void buttonPress(){ // Xử lý khi nhấn nút vật lý
     toggleFan(); // Đổi trạng thái quạt
-    sendStateToFirebase(); // Đồng bộ trạng thái lên Firebase
+    send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
 }
 void FbUpdate(String st){ // Cập nhật trạng thái từ Firebase
     // Nếu quạt đang bật nhưng Firebase yêu cầu OFF

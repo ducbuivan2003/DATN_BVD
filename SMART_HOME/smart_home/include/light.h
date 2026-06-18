@@ -37,7 +37,7 @@ void toggleLed() { // Đảo trạng thái LED
     }
 }
 
-void sendStateToFirebase() { // Gửi trạng thái LED lên Firebase
+void send_state_to_fb() { // Gửi trạng thái LED lên Firebase
     // Chuyển trạng thái bool sang String
     String state = getMainState() ? "on" : "off";
     // Upload trạng thái lên Firebase
@@ -45,7 +45,7 @@ void sendStateToFirebase() { // Gửi trạng thái LED lên Firebase
 }
 void buttonPress(){ // Xử lý khi nhấn nút vật lý
     toggleLed(); // Đổi trạng thái LED
-    sendStateToFirebase(); // Đồng bộ trạng thái lên Firebase
+    send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
 }
 void FbUpdate(String st){ // Cập nhật trạng thái từ Firebase
     // Nếu LED đang bật nhưng Firebase yêu cầu OFF

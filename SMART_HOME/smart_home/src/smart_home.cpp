@@ -100,15 +100,15 @@ void loop() {
   }
 
   mq2.detectGas();
-  if(mq2.getDectectedGas()){
+  if(mq2.get_detected_gas()){
     if(!fanBep.getMainState()){
       fanBep.turnOnFan();
-      fanBep.sendStateToFirebase();
+      fanBep.send_state_to_fb();
     }
   }
   if(mq2.isNeedTurnFan()){
     fanBep.turnOffFan();
-    fanBep.sendStateToFirebase();
+    fanBep.send_state_to_fb();
     mq2.justTurnOff();
   }
 

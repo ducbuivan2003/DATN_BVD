@@ -38,7 +38,7 @@ void setTemperature(String temp) { // Cập nhật nhiệt độ máy lạnh
     sendOtherStateToFirebase(); // Đồng bộ nhiệt độ lên Firebase
     Serial.println("❄️ " + getId() + " set temperature: " + temp + "°C");
 }
-void sendStateToFirebase() { // Gửi trạng thái và nhiệt độ lên Firebase
+void send_state_to_fb() { // Gửi trạng thái và nhiệt độ lên Firebase
     String state = getMainState() ? "on" : "off"; // Chuyển trạng thái sang String
     uploadData(getPath() + "/status", state); // Upload trạng thái ON/OFF
     uploadData(getPath() + "/temperature", getOtherState()); // Upload nhiệt độ
