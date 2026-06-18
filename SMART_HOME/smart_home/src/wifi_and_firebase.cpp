@@ -5,7 +5,7 @@ FirebaseAuth auth;
 FirebaseConfig config;
 const char* ntpServer = "pool.ntp.org";
 
-void setupwifiFirebase(){
+void setup_wifi_firebase(){
     // Kết nối WiFi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print("Đang kết nối WiFi...");
@@ -50,7 +50,7 @@ String getCurrentTime() {
 }
     
 // ✅ Đọc trạng thái thiết bị từ Firebase
-String downloadData(String path) {
+String download_data(String path) {
     path = String(USER_ID) + path;  // Gán USER_ID vào đường dẫn
     if (Firebase.RTDB.getString(&fbdo, path)) {
         String status = fbdo.stringData();

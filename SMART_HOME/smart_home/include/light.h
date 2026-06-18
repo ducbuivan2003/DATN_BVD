@@ -47,7 +47,7 @@ void button_press(){ // Xử lý khi nhấn nút vật lý
     toggleLed(); // Đổi trạng thái LED
     send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
 }
-void FbUpdate(String st){ // Cập nhật trạng thái từ Firebase
+void Fb_update(String st){ // Cập nhật trạng thái từ Firebase
     // Nếu LED đang bật nhưng Firebase yêu cầu OFF
     if(getMainState() && st == "off"){
         turnOffLed();

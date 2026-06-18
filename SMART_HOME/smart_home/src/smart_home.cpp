@@ -13,12 +13,6 @@
 // ko upload state trong class
 
 
-/*
-#define PHONG_BEP "23714458"
-#define PHONG_NGU "323238991"
-#define PHONG_KHACH "374566167"
-#define PHONG_GARA "589955086"
-*/
 #define PHONG_BEP "23714458"
 #define PHONG_NGU "323238991"
 #define PHONG_KHACH "374566167"
@@ -29,15 +23,20 @@
 #if 1
 void Stream_Data_from_Fb(std::vector<Device*> &dvList){
   static unsigned long lastTime = 0;
+
   unsigned long currentTime = millis(); 
-  if (currentTime - lastTime > 1000) {  // nhận dữ liệu mỗi 1 giây
+
+  if (currentTime - lastTime > 1000) 
+  {  // nhận dữ liệu mỗi 1 giây
     lastTime = currentTime;
-    for(int i=0;i<dvList.size();i++){
-      String st = downloadData(dvList[i]->getPath() + "/status");
-      dvList[i]->FbUpdate(st);
+    for(int i=0;i<dvList.size();i++)
+    {
+      String st = download_data(dvList[i]->getPath() + "/status");
+      dvList[i]->Fb_update(st);
     }
   }
 
+return;
 }
 #endif
 //-------------------------------------------------END STREAM------------------------------------------------------
@@ -58,29 +57,39 @@ FM52 fm52(35);// chân digital (cảm biến tiệm cận) 2 chan nguon 3.3v, 1 
 DHT11 dht11(23); // chân 23 làm tín hiệu input
 
 void setup() {
-  setupwifiFirebase();
+  setup_wifi_firebase();
   Serial.begin(115200);
   fanBep.begin();
-  lightBep.begin();
-  lightHall.begin();
-  lightKhach.begin();
-  lighNgu.begin();
-  lightGarage.begin();
-  mq2.begin();
-  fm52.begin();
-  dht11.begin();
-  airC.begin();
-  buttonBegin();
 
+  lightHall.begin();
+
+  lightBep.begin();
+
+  lightKhach.begin();
+
+  lightGarage.begin();
+
+  lighNgu.begin();
+
+  mq2.begin();
+
+  dht11.begin();
+
+  airC.begin();
+
+  fm52.begin();
+  
+  buttonBegin();
   // in ra chân button
-  Serial.print("Button pins: ");
-  for(int i = 0; i < buttonPins.size(); i++) {
+  Serial.print("Duc log Button pins: ");
+  for(int i = 0; i < buttonPins.size(); i++) 
+  {
     Serial.print("Button pin: ");
     Serial.println(buttonPins[i]);
   }
-  Serial.println("Start Streaming data");
+  Serial.println("Start Streaming data from Fb");
   Stream_Data_from_Fb(Device::dvList);
-  Serial.println("Setup done");
+  Serial.println("Setup done successfully");
 
 }
 
@@ -110,6 +119,7 @@ void loop() {
       fanBep.send_state_to_fb();
     }
   }
+
   if(mq2.isNeedTurnFan())
   {
     fanBep.turnOffFan();
@@ -117,9 +127,10 @@ void loop() {
     mq2.justTurnOff();
   }
 
-  static unsigned long lastTime = 0;
   unsigned long currentTime = millis();
-  if (currentTime - lastTime > 2345) { 
+  static unsigned long lastTime = 0;
+  if (currentTime - lastTime > 2345)
+   { 
     lastTime = currentTime;
     dht11.readSensor();
    // String st = String(dht11.getTemperature());
@@ -127,24 +138,34 @@ void loop() {
    // airC.sendOtherStateToFirebase();
   }
 
-if (lastPressedButton != -1) {
+if (lastPressedButton != -1) 
+{
         switch (lastPressedButton) {
             case 33:
+            {
                 lightBep.button_press();
                 break;
+            }
+
             case 26:
-                fanBep.button_press();
-                break;
+            {
+              
+              fanBep.button_press();
+              break;
+            }
             case 4:
+            {
                 lighNgu.button_press();
                 break;
+            }
             case 34:
+            {
                 lightKhach.button_press();
                 break;
+            }
             default:
                 break;
         }
         lastPressedButton = -1; // Xóa trạng thái sau khi xử lý
     }
-
 }

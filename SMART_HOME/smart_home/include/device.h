@@ -58,7 +58,7 @@ private:
       int getButtonPin() { return buttonPin; }
       void setButtonPin(int buttonPin) { this->buttonPin = buttonPin; }
       void setRoomId(String roomId) { this->roomId = roomId; }
-      virtual void FbUpdate(String st) = 0; 
+      virtual void Fb_update(String st) = 0; 
       String getRoomId() { return roomId; }        
 
   };

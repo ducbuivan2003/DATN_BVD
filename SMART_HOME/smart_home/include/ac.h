@@ -46,7 +46,7 @@ void send_state_to_fb() { // Gửi trạng thái và nhiệt độ lên Firebase
 void sendOtherStateToFirebase() { // Gửi riêng nhiệt độ lên Firebase
     uploadData(getPath() + "/temperature", getOtherState());
 }
-void FbUpdate(String st){ // Cập nhật trạng thái từ Firebase
+void Fb_update(String st){ // Cập nhật trạng thái từ Firebase
     if(getMainState() && st == "off"){ // Nếu đang ON nhưng Firebase yêu cầu OFF
         turnOffAC();
     }

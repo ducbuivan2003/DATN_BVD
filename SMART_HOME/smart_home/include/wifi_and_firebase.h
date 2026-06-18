@@ -26,10 +26,10 @@ extern const char* ntpServer;
 const long  gmtOffset_sec = 7 * 3600; // GMT+7 (Việt Nam)
 const int   daylightOffset_sec = 0;   
 
-void setupwifiFirebase();
+void setup_wifi_firebase();
 String generateKey();   
 String getCurrentTime();
-String downloadData(String path);
+String download_data(String path);
 bool uploadData(String path, String data);
 void pushNotification(String text, String deviceId);
 

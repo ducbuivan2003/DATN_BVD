@@ -47,7 +47,7 @@ void button_press(){ // Xử lý khi nhấn nút vật lý
     toggleFan(); // Đổi trạng thái quạt
     send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
 }
-void FbUpdate(String st){ // Cập nhật trạng thái từ Firebase
+void Fb_update(String st){ // Cập nhật trạng thái từ Firebase
     // Nếu quạt đang bật nhưng Firebase yêu cầu OFF
     if(getMainState() && st == "off"){
         turnOffFan();
