@@ -43,7 +43,7 @@ void send_state_to_fb() { // Gửi trạng thái LED lên Firebase
     // Upload trạng thái lên Firebase
     uploadData(getPath() + "/status", state);
 }
-void buttonPress(){ // Xử lý khi nhấn nút vật lý
+void button_press(){ // Xử lý khi nhấn nút vật lý
     toggleLed(); // Đổi trạng thái LED
     send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
 }

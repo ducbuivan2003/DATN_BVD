@@ -92,21 +92,26 @@ void loop() {
 
   Stream_Data_from_Fb(Device::dvList);
 
-  if(fm52.isDetectedClose()){
+  if(fm52.isDetectedClose())
+  {
     lightHall.turnOnLed();
   }
-  else{
+  else
+  {
     lightHall.turnOffLed();
   }
 
   mq2.detectGas();
-  if(mq2.get_detected_gas()){
-    if(!fanBep.getMainState()){
-      fanBep.turnOnFan();
+  if(mq2.get_detected_gas())
+  {
+    if(!fanBep.getMainState())
+    {
+      fanBep.turn_on_fan();
       fanBep.send_state_to_fb();
     }
   }
-  if(mq2.isNeedTurnFan()){
+  if(mq2.isNeedTurnFan())
+  {
     fanBep.turnOffFan();
     fanBep.send_state_to_fb();
     mq2.justTurnOff();
@@ -121,37 +126,20 @@ void loop() {
     airC.setTemperature(String(dht11.getTemperature()));
    // airC.sendOtherStateToFirebase();
   }
-#if 0
-  switch(scanPressedButton()){
-    case 33:
-      lightBep.buttonPress();
-      break;
-    case 26:
-      fanBep.buttonPress();
-      break;
-    case 4:
-      lighNgu.buttonPress();
-      break;
-    case 34:
-      lightKhach.buttonPress();
-      break;
-    default:
-      break;
-  }
-#endif
+
 if (lastPressedButton != -1) {
         switch (lastPressedButton) {
             case 33:
-                lightBep.buttonPress();
+                lightBep.button_press();
                 break;
             case 26:
-                fanBep.buttonPress();
+                fanBep.button_press();
                 break;
             case 4:
-                lighNgu.buttonPress();
+                lighNgu.button_press();
                 break;
             case 34:
-                lightKhach.buttonPress();
+                lightKhach.button_press();
                 break;
             default:
                 break;

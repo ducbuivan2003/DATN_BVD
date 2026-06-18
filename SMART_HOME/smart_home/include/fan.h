@@ -13,7 +13,7 @@ public:
     digitalWrite(getPin(), LOW); // Đưa chân về LOW để tắt quạt ban đầu
     setMainState(false); // Cập nhật trạng thái quạt là OFF
 }
-void turnOnFan() { // Hàm bật quạt
+void turn_on_fan() { // Hàm bật quạt
     // Chỉ bật khi quạt đang tắt
     if(!getMainState()) {
       setMainState(true); // Cập nhật trạng thái quạt là ON
@@ -34,7 +34,7 @@ void toggleFan() { // Đảo trạng thái quạt
     if(getMainState()) {
         turnOffFan();
     } else { // Nếu quạt đang tắt thì bật
-        turnOnFan();
+        turn_on_fan();
     }
 }
 void send_state_to_fb() { // Gửi trạng thái quạt lên Firebase
@@ -43,7 +43,7 @@ void send_state_to_fb() { // Gửi trạng thái quạt lên Firebase
     // Upload trạng thái lên Firebase
     uploadData(getPath() + "/status", state);
 }
-void buttonPress(){ // Xử lý khi nhấn nút vật lý
+void button_press(){ // Xử lý khi nhấn nút vật lý
     toggleFan(); // Đổi trạng thái quạt
     send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
 }
@@ -54,7 +54,7 @@ void FbUpdate(String st){ // Cập nhật trạng thái từ Firebase
     }
     // Nếu quạt đang tắt nhưng Firebase yêu cầu ON
     else if(!getMainState() && st == "on"){
-        turnOnFan();
+        turn_on_fan();
     }
 }
 };
