@@ -115,9 +115,9 @@ public:
             return false;
         }
     }
-    void update_password(String newPassword) {
-        if(newPassword != pw) {
-            pw = newPassword; // Cập nhật mật khẩu mới
+    void update_password(String new_password) {
+        if(new_password != pw) {
+            pw = new_password; // Cập nhật mật khẩu mới
             Serial.println("✅ Mật khẩu đã được cập nhật: " + pw);
         }
     }
