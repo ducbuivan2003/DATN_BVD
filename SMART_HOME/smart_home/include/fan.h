@@ -6,54 +6,54 @@
 
 class Fan : public Device {
 public:
-  Fan(int pin, String id, String name, String roomId, int buttonPin =-1, bool needFbUpdate =true) : Device(pin, id, name, roomId, buttonPin, needFbUpdate) {
+  Fan(int pin, String id, String name, String roomId, int button_pin =-1, bool need_FB_update =true) : Device(pin, id, name, roomId, button_pin, need_FB_update) {
   }
   void begin() { // Khởi tạo quạt và cấu hình chân output
-    pinMode(getPin(), OUTPUT); // Cấu hình chân điều khiển quạt là OUTPUT
-    digitalWrite(getPin(), LOW); // Đưa chân về LOW để tắt quạt ban đầu
-    setMainState(false); // Cập nhật trạng thái quạt là OFF
+    pinMode(get_pin(), OUTPUT); // Cấu hình chân điều khiển quạt là OUTPUT
+    digitalWrite(get_pin(), LOW); // Đưa chân về LOW để tắt quạt ban đầu
+    set_main_state(false); // Cập nhật trạng thái quạt là OFF
 }
 void turn_on_fan() { // Hàm bật quạt
     // Chỉ bật khi quạt đang tắt
-    if(!getMainState()) {
-      setMainState(true); // Cập nhật trạng thái quạt là ON
-        digitalWrite(getPin(), HIGH); // Xuất mức HIGH để bật relay/quạt
-        Serial.println("🌀 " + getId() + " ON"); // In trạng thái lên Serial Monitor
+    if(!get_main_state()) {
+      set_main_state(true); // Cập nhật trạng thái quạt là ON
+        digitalWrite(get_pin(), HIGH); // Xuất mức HIGH để bật relay/quạt
+        Serial.println("🌀 " + get_Id() + " ON"); // In trạng thái lên Serial Monitor
     }
 }
-void turnOffFan() { // Hàm tắt quạt
+void turn_off_fan() { // Hàm tắt quạt
     // Chỉ tắt khi quạt đang bật
-    if(getMainState()) {
-        setMainState(false); // Cập nhật trạng thái quạt là OFF
-        digitalWrite(getPin(), LOW); // Xuất mức LOW để tắt relay/quạt
-        Serial.println("🌀 " + getId() + " OFF"); // In trạng thái lên Serial Monitor
+    if(get_main_state()) {
+        set_main_state(false); // Cập nhật trạng thái quạt là OFF
+        digitalWrite(get_pin(), LOW); // Xuất mức LOW để tắt relay/quạt
+        Serial.println("🌀 " + get_Id() + " OFF"); // In trạng thái lên Serial Monitor
     }
 }
-void toggleFan() { // Đảo trạng thái quạt
+void toggle_fan() { // Đảo trạng thái quạt
     // Nếu quạt đang bật thì tắt
-    if(getMainState()) {
-        turnOffFan();
+    if(get_main_state()) {
+        turn_off_fan();
     } else { // Nếu quạt đang tắt thì bật
         turn_on_fan();
     }
 }
-void send_state_to_fb() { // Gửi trạng thái quạt lên Firebase
+void send_state_to_FB() { // Gửi trạng thái quạt lên Firebase
     // Chuyển trạng thái bool sang chuỗi
-    String state = getMainState() ? "on" : "off";
+    String state = get_main_state() ? "on" : "off";
     // Upload trạng thái lên Firebase
-    uploadData(getPath() + "/status", state);
+    upload_data(get_path() + "/status", state);
 }
 void button_press(){ // Xử lý khi nhấn nút vật lý
-    toggleFan(); // Đổi trạng thái quạt
-    send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
+    toggle_fan(); // Đổi trạng thái quạt
+    send_state_to_FB(); // Đồng bộ trạng thái lên Firebase
 }
 void Fb_update(String st){ // Cập nhật trạng thái từ Firebase
     // Nếu quạt đang bật nhưng Firebase yêu cầu OFF
-    if(getMainState() && st == "off"){
-        turnOffFan();
+    if(get_main_state() && st == "off"){
+        turn_off_fan();
     }
     // Nếu quạt đang tắt nhưng Firebase yêu cầu ON
-    else if(!getMainState() && st == "on"){
+    else if(!get_main_state() && st == "on"){
         turn_on_fan();
     }
 }

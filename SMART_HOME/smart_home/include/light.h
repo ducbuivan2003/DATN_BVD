@@ -5,56 +5,56 @@
 #include "button.h"
 class Light : public Device {// 1 chân nối vcc, chân điều khiển kéo xuống low thì sáng
 public:
-  Light(int pin, String id, String name, String roomId, int buttonPin=-1, bool needFbUpdate=true) : Device(pin, id, name, roomId, buttonPin, needFbUpdate) {}
+  Light(int pin, String id, String name, String roomId, int button_pin=-1, bool need_FB_update=true) : Device(pin, id, name, roomId, button_pin, need_FB_update) {}
   void begin(){ // Khởi tạo LED và cấu hình chân output
-    pinMode(getPin(), OUTPUT); // Cấu hình chân LED là OUTPUT
-    digitalWrite(getPin(), LOW); // Đưa chân xuống LOW để bật LED
-    setMainState(true); // Cập nhật trạng thái hiện tại là ON
+    pinMode(get_pin(), OUTPUT); // Cấu hình chân LED là OUTPUT
+    digitalWrite(get_pin(), LOW); // Đưa chân xuống LOW để bật LED
+    set_main_state(true); // Cập nhật trạng thái hiện tại là ON
 }
 
-void turnOnLed() { // Hàm bật LED
+void turn_on_led() { // Hàm bật LED
     // Chỉ bật khi LED đang tắt
-    if(!getMainState()) {
-        setMainState(true); // Cập nhật trạng thái ON
-        digitalWrite(getPin(), LOW); // Xuất mức LOW để bật LED
-        Serial.println("💡 " + getId() + " ON"); // In trạng thái ra Serial
+    if(!get_main_state()) {
+        set_main_state(true); // Cập nhật trạng thái ON
+        digitalWrite(get_pin(), LOW); // Xuất mức LOW để bật LED
+        Serial.println("💡 " + get_Id() + " ON"); // In trạng thái ra Serial
     }
 }
-void turnOffLed() { // Hàm tắt LED
+void turn_off_led() { // Hàm tắt LED
     // Chỉ tắt khi LED đang bật
-    if(getMainState()) {
-        setMainState(false); // Cập nhật trạng thái OFF
-        digitalWrite(getPin(), HIGH); // Xuất mức HIGH để tắt LED
-        Serial.println("💡 " + getId() + " OFF"); // In trạng thái ra Serial
+    if(get_main_state()) {
+        set_main_state(false); // Cập nhật trạng thái OFF
+        digitalWrite(get_pin(), HIGH); // Xuất mức HIGH để tắt LED
+        Serial.println("💡 " + get_Id() + " OFF"); // In trạng thái ra Serial
     }
 }
-void toggleLed() { // Đảo trạng thái LED
+void toggle_led() { // Đảo trạng thái LED
     // Nếu LED đang bật thì tắt
-    if(getMainState()) {
-        turnOffLed();
+    if(get_main_state()) {
+        turn_off_led();
     } else { // Nếu LED đang tắt thì bật
-        turnOnLed();
+        turn_on_led();
     }
 }
 
-void send_state_to_fb() { // Gửi trạng thái LED lên Firebase
+void send_state_to_FB() { // Gửi trạng thái LED lên Firebase
     // Chuyển trạng thái bool sang String
-    String state = getMainState() ? "on" : "off";
+    String state = get_main_state() ? "on" : "off";
     // Upload trạng thái lên Firebase
-    uploadData(getPath() + "/status", state);
+    upload_data(get_path() + "/status", state);
 }
 void button_press(){ // Xử lý khi nhấn nút vật lý
-    toggleLed(); // Đổi trạng thái LED
-    send_state_to_fb(); // Đồng bộ trạng thái lên Firebase
+    toggle_led(); // Đổi trạng thái LED
+    send_state_to_FB(); // Đồng bộ trạng thái lên Firebase
 }
 void Fb_update(String st){ // Cập nhật trạng thái từ Firebase
     // Nếu LED đang bật nhưng Firebase yêu cầu OFF
-    if(getMainState() && st == "off"){
-        turnOffLed();
+    if(get_main_state() && st == "off"){
+        turn_off_led();
     }
     // Nếu LED đang tắt nhưng Firebase yêu cầu ON
-    else if(!getMainState() && st == "on"){
-        turnOnLed();
+    else if(!get_main_state() && st == "on"){
+        turn_on_led();
     }
 }
 };

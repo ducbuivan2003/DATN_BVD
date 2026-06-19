@@ -17,7 +17,7 @@ public:
     void begin() { // Khởi tạo cảm biến DHT11
         dht.setup(pin, DHTesp::DHT11);
     }
-    void readSensor() { // Đọc dữ liệu từ cảm biến
+    void read_sensor() { // Đọc dữ liệu từ cảm biến
         temperature = dht.getTemperature();
         humidity = dht.getHumidity();
     }

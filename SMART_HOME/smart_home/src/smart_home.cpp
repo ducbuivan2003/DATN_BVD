@@ -22,16 +22,16 @@
 //-------------------------------------------------STREAM------------------------------------------------------
 #if 1
 void Stream_Data_from_Fb(std::vector<Device*> &dvList){
-  static unsigned long lastTime = 0;
+  static unsigned long last_time = 0;
 
-  unsigned long currentTime = millis(); 
+  unsigned long current_time = millis(); 
 
-  if (currentTime - lastTime > 1000) 
+  if (current_time - last_time > 1000) 
   {  // nhận dữ liệu mỗi 1 giây
-    lastTime = currentTime;
+    last_time = current_time;
     for(int i=0;i<dvList.size();i++)
     {
-      String st = download_data(dvList[i]->getPath() + "/status");
+      String st = download_data(dvList[i]->get_path() + "/status");
       dvList[i]->Fb_update(st);
     }
   }
@@ -42,14 +42,14 @@ return;
 //-------------------------------------------------END STREAM------------------------------------------------------
 std::vector<int> buttonPins ={};  // Chân các nút bấm
 std::vector<Device*> Device::dvList;
-volatile int lastPressedButton = -1;
+volatile int last_pressed_button = -1;
 
-Fan fanBep(27, "82322702", "Quạt 1", PHONG_BEP, 26);// 1 chan noi 5v 1 chan noi BJT cuc C 
-Light lightBep(25, "903872522", "Đèn 1", PHONG_BEP, 33);// 1 chân nối vcc , chân điều khiển kéo xuống low thì sáng (25)
-Light lightHall(12, "null", "Đèn 2", PHONG_KHACH, -1,false);
-Light lightKhach(14, "254010416", "Đèn 3", PHONG_KHACH, 34);
-Light lighNgu(22, "274878463", "Đèn 5", PHONG_NGU, 4); // chân 4 là chân điều khiển, chân 22 là chân nối dây âm
-Light lightGarage(19, "356325987", "Đèn 4", PHONG_GARA, -1);
+Fan fan_bep(27, "82322702", "Quạt 1", PHONG_BEP, 26);// 1 chan noi 5v 1 chan noi BJT cuc C 
+Light light_bep(25, "903872522", "Đèn 1", PHONG_BEP, 33);// 1 chân nối vcc , chân điều khiển kéo xuống low thì sáng (25)
+Light light_hall(12, "null", "Đèn 2", PHONG_KHACH, -1,false);
+Light light_khach(14, "254010416", "Đèn 3", PHONG_KHACH, 34);
+Light light_ngu(22, "274878463", "Đèn 5", PHONG_NGU, 4); // chân 4 là chân điều khiển, chân 22 là chân nối dây âm
+Light light_garage(19, "356325987", "Đèn 4", PHONG_GARA, -1);
 AirConditioner airC(18, "716502344", "Điều hòa", PHONG_NGU, -1);
 
 MQ2 mq2(-1,32, 200);// A, D, Threshold, dùng Analog cho đẹp  (cảm biến gas) 2 chan nguon 5v, 1 chan tin hieu
@@ -59,17 +59,17 @@ DHT11 dht11(23); // chân 23 làm tín hiệu input
 void setup() {
   setup_wifi_firebase();
   Serial.begin(115200);
-  fanBep.begin();
+  fan_bep.begin();
 
-  lightHall.begin();
+  light_hall.begin();
 
-  lightBep.begin();
+  light_bep.begin();
 
-  lightKhach.begin();
+  light_khach.begin();
 
-  lightGarage.begin();
+  light_garage.begin();
 
-  lighNgu.begin();
+  light_ngu.begin();
 
   mq2.begin();
 
@@ -79,7 +79,7 @@ void setup() {
 
   fm52.begin();
   
-  buttonBegin();
+  button_begin();
   // in ra chân button
   Serial.print("Duc log Button pins: ");
   for(int i = 0; i < buttonPins.size(); i++) 
@@ -103,69 +103,69 @@ void loop() {
 
   if(fm52.isDetectedClose())
   {
-    lightHall.turnOnLed();
+    light_hall.turn_on_led();
   }
   else
   {
-    lightHall.turnOffLed();
+    light_hall.turn_off_led();
   }
 
-  mq2.detectGas();
+  mq2.detect_gas();
   if(mq2.get_detected_gas())
   {
-    if(!fanBep.getMainState())
+    if(!fan_bep.get_main_state())
     {
-      fanBep.turn_on_fan();
-      fanBep.send_state_to_fb();
+      fan_bep.turn_on_fan();
+      fan_bep.send_state_to_FB();
     }
   }
 
   if(mq2.isNeedTurnFan())
   {
-    fanBep.turnOffFan();
-    fanBep.send_state_to_fb();
+    fan_bep.turn_off_fan();
+    fan_bep.send_state_to_FB();
     mq2.justTurnOff();
   }
 
-  unsigned long currentTime = millis();
-  static unsigned long lastTime = 0;
-  if (currentTime - lastTime > 2345)
+  unsigned long current_time = millis();
+  static unsigned long last_time = 0;
+  if (current_time - last_time > 2345)
    { 
-    lastTime = currentTime;
-    dht11.readSensor();
+    last_time = current_time;
+    dht11.read_sensor();
    // String st = String(dht11.getTemperature());
-    airC.setTemperature(String(dht11.getTemperature()));
-   // airC.sendOtherStateToFirebase();
+    airC.set_temperature(String(dht11.getTemperature()));
+   // airC.send_other_state_to_FB();
   }
 
-if (lastPressedButton != -1) 
+if (last_pressed_button != -1) 
 {
-        switch (lastPressedButton) {
+        switch (last_pressed_button) {
             case 33:
             {
-                lightBep.button_press();
+                light_bep.button_press();
                 break;
             }
 
             case 26:
             {
               
-              fanBep.button_press();
+              fan_bep.button_press();
               break;
             }
             case 4:
             {
-                lighNgu.button_press();
+                light_ngu.button_press();
                 break;
             }
             case 34:
             {
-                lightKhach.button_press();
+                light_khach.button_press();
                 break;
             }
             default:
                 break;
         }
-        lastPressedButton = -1; // Xóa trạng thái sau khi xử lý
+        last_pressed_button = -1; // Xóa trạng thái sau khi xử lý
     }
 }

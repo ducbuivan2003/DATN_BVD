@@ -22,15 +22,15 @@ extern FirebaseConfig config;
 #define DEVICE_ID "esp32w2"
 
 // Cấu hình NTP
-extern const char* ntpServer;
-const long  gmtOffset_sec = 7 * 3600; // GMT+7 (Việt Nam)
-const int   daylightOffset_sec = 0;   
+extern const char* ntp_server;
+const long  gmt_offset_sec = 7 * 3600; // GMT+7 (Việt Nam)
+const int   daylight_offset_sec = 0;   
 
 void setup_wifi_firebase();
-String generateKey();   
-String getCurrentTime();
+String generate_key();   
+String get_current_time();
 String download_data(String path);
-bool uploadData(String path, String data);
-void pushNotification(String text, String deviceId);
+bool upload_data(String path, String data);
+void push_notification(String text, String deviceId);
 
 #endif

@@ -11,13 +11,13 @@
 private:
     int APin;                       // Chân Analog
     int Dpin;                       // Chân Digital
-    int sensorValue;                // Giá trị cảm biến
+    int sensor_value;                // Giá trị cảm biến
     int sensorThres = 400;          // Ngưỡng phát hiện gas
-    bool needTurnOffFan = false;    // Cờ tắt quạt
-    bool dectectedGas = false;      // Trạng thái phát hiện gas
-    unsigned long gasDetectedTime = 0; // Thời điểm phát hiện gas
-    unsigned long lastTime = 0;     // Thời điểm phát hiện gần nhất
-    bool isSentNoti = false;        // Cờ gửi thông báo
+    bool need_turn_off_fan = false;    // Cờ tắt quạt
+    bool dectected_gas = false;      // Trạng thái phát hiện gas
+    unsigned long gas_detected_time = 0; // Thời điểm phát hiện gas
+    unsigned long last_time = 0;     // Thời điểm phát hiện gần nhất
+    bool is_sent_noti = false;        // Cờ gửi thông báo
 
 public:
 
@@ -34,47 +34,47 @@ public:
             Serial.println("Dpin = -1");
         }
     }
-    void sentNotiToFb() { // Gửi thông báo gas lên Firebase
-        pushNotification("Có khí gas", DEVICE_ID);
+    void sent_noti_to_FB() { // Gửi thông báo gas lên Firebase
+        push_notification("Có khí gas", DEVICE_ID);
     }
-      void detectGas() {
+      void detect_gas() {
     unsigned long now = millis(); // Lấy thời gian hiện tại
-    int gasValue = (APin != -1) ? analogRead(APin) : 0; // Đọc giá trị Analog
-    int gasState = (Dpin != -1) ? digitalRead(Dpin) : HIGH; // Đọc trạng thái Digital
+    int gas_value = (APin != -1) ? analogRead(APin) : 0; // Đọc giá trị Analog
+    int gas_state = (Dpin != -1) ? digitalRead(Dpin) : HIGH; // Đọc trạng thái Digital
     // Kiểm tra phát hiện khí gas
-    bool gasDetected = (APin != -1 && gasValue > sensorThres) || (Dpin != -1 && gasState == LOW);
-    if (gasDetected) {
+    bool gas_detected = (APin != -1 && gas_value > sensorThres) || (Dpin != -1 && gas_state == LOW);
+    if (gas_detected) {
         // Lưu thời điểm bắt đầu phát hiện gas
-        if (gasDetectedTime == 0) {
-                    gasDetectedTime = now;  // Bắt đầu đếm thời gian phát hiện gas
+        if (gas_detected_time == 0) {
+                    gas_detected_time = now;  // Bắt đầu đếm thời gian phát hiện gas
                 }
-                if (!dectectedGas && now - gasDetectedTime >= 20) {  // Đã phát hiện gas trên 1 giây
-                    dectectedGas = true;
-                    needTurnOffFan = false;
-                    lastTime = now;  // Cập nhật lần cuối phát hiện gas
-                    if (!isSentNoti) {
-                        sentNotiToFb();
-                        isSentNoti = true;
+                if (!dectected_gas && now - gas_detected_time >= 20) {  // Đã phát hiện gas trên 1 giây
+                    dectected_gas = true;
+                    need_turn_off_fan = false;
+                    last_time = now;  // Cập nhật lần cuối phát hiện gas
+                    if (!is_sent_noti) {
+                        sent_noti_to_FB();
+                        is_sent_noti = true;
                     }
                 }
             } else {  
-                gasDetectedTime = 0;  // Reset bộ đếm thời gian phát hiện gas
-                if (dectectedGas && now - lastTime >= 5000) {  // Không có gas trong 4 giây
-                    dectectedGas = false;
-                    needTurnOffFan = true;
-                    isSentNoti = false;
+                gas_detected_time = 0;  // Reset bộ đếm thời gian phát hiện gas
+                if (dectected_gas && now - last_time >= 5000) {  // Không có gas trong 4 giây
+                    dectected_gas = false;
+                    need_turn_off_fan = true;
+                    is_sent_noti = false;
                 }
             }
     
         }
     bool get_detected_gas() { // Lấy trạng thái phát hiện gas
-    return dectectedGas;
+    return dectected_gas;
 }
 bool isNeedTurnFan() { // Kiểm tra cần tắt quạt
-   return needTurnOffFan;
+   return need_turn_off_fan;
 }
 void justTurnOff(){ // Đặt lại trạng thái tắt quạt
-    needTurnOffFan = false;
+    need_turn_off_fan = false;
 }
 };
 #endif
