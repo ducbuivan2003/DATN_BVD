@@ -13,8 +13,8 @@ class OLED {
         // Chân I2C của ESP32
         static constexpr int SDA = 21;
         static constexpr int SCL = 22;
-        unsigned long previousMillis = 0;   // Biến xử lý thời gian
-        unsigned long currentMillis = 0;
+        unsigned long  previous_millis = 0;   // Biến xử lý thời gian
+        unsigned long current_millis = 0;
         const long interval = 2000;  // Thời gian tự quay về màn hình chính
         Adafruit_SSD1306 display;       // Đối tượng điều khiển OLED
     public:
@@ -32,19 +32,19 @@ class OLED {
             display.setCursor(10, 25);      // Hiển thị lời chào
             display.print("Hello!");
             display.display();         // Hiển thị giao diện chính
-            showHome();
+            show_home();
         }
         // Chuyển về màn hình chính sau khoảng thời gian chờ
-        void returnHomeScreen(){
-            currentMillis = millis();
-            if(currentMillis - previousMillis >= interval){
-                previousMillis = currentMillis;
-                showHome();
+        void return_home_screen(){
+            current_millis = millis();
+            if(current_millis -  previous_millis >= interval){
+                 previous_millis = current_millis;
+                show_home();
             }
         }
         // Cập nhật thời gian thao tác gần nhất
-        void updatePrevious(){
-            previousMillis = millis();
+        void update_previous(){
+             previous_millis = millis();
         }
     // Xóa nội dung màn hình OLED
         void clearDisplay() {
@@ -52,14 +52,14 @@ class OLED {
             display.display();
         }
     // Hiển thị text tại vị trí chỉ định
-       void showText(const String& text, int x, int y) { // Hiển thị text tại vị trí chỉ định
+       void show_text(const String& text, int x, int y) { // Hiển thị text tại vị trí chỉ định
     display.clearDisplay(); // Xóa màn hình cũ
     display.setCursor(x, y); // Đặt vị trí con trỏ
     display.print(text); // In text lên OLED
     display.display(); // Cập nhật màn hình
 }
 // Hiển thị mật khẩu đang nhập
-void showPassword(String pw){
+void show_password(String pw){
     display.clearDisplay(); // Xóa màn hình
     display.setCursor(20, 15); // Hiển thị tiêu đề
     display.print("Password");
@@ -70,7 +70,7 @@ void showPassword(String pw){
     display.display(); // Cập nhật màn hình
 }
 // Hiển thị mật khẩu sai
-        void showWrongPassword(){
+        void show_wrong_password(){
             display.clearDisplay();
             display.setCursor(35, 15);
             display.print("Wrong");
@@ -79,7 +79,7 @@ void showPassword(String pw){
             display.display();
         }
         // Hiển thị thẻ hợp lệ
-        void showAccessGranted(){
+        void show_access_granted(){
             display.clearDisplay();
             display.setCursor(40, 15);
             display.print("Card");
@@ -88,7 +88,7 @@ void showPassword(String pw){
             display.display();
         }
 // Hiển thị thẻ bị từ chối
-        void showAccessDenied(){
+        void show_access_denied(){
             display.clearDisplay();
             display.setCursor(40, 15);
             display.print("Card");
@@ -98,14 +98,14 @@ void showPassword(String pw){
     
         }
         // Hiển thị thông báo OK
-        void displayOK(){
+        void display_ok(){
             display.clearDisplay();
             display.setCursor(30, 15);
-            display.print("OK!!!");
+            display.print("OK!!!!");
             display.display();
         }
         // Hiển thị màn hình chính
-        void showHome(){
+        void show_home(){
             display.clearDisplay();
             display.setCursor(10, 15);
             display.print("SmartHome");
@@ -114,14 +114,14 @@ void showPassword(String pw){
             display.display();
         }
         // Hiển thị trạng thái đóng cửa
-        void showClose_door(){
+        void show_close_door(){
             display.clearDisplay();
             display.setCursor(5, 15);
             display.print("Close Door");
             display.display();
         }
         // Hiển thị trạng thái mở cửa
-        void showOpen_door(){
+        void show_open_door(){
             display.clearDisplay();
             display.setCursor(5, 15);
             display.print("Open Door");

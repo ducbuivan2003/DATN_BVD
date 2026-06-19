@@ -6,121 +6,121 @@
 // pin ko thể dùng khi dùng wifi 34 35 36 39  
 RFID_Door door(5, 15, 2); 
 OLED oled; 
-keyBoard kb; 
-bool isTypePW = false;
+key_board kb; 
+bool is_type_PW = false;
 
-QueueHandle_t keyQueue; // Hàng đợi cho phím nhấn
+QueueHandle_t key_queue; // Hàng đợi cho phím nhấn
 
-void StreamDoorData() {
-    static unsigned long lastTime = 0;
-    unsigned long currentTime = millis(); 
-    if (currentTime - lastTime > 1000) {
-        lastTime = currentTime;
-        String st = downloadData(did + "/status");
+void stream_door_data() {
+    static unsigned long last_time = 0;
+    unsigned long current_time = millis(); 
+    if (current_time - last_time > 1000) {
+        last_time = current_time;
+        String st = download_data(did + "/status");
         if (st == "on") {
-            if (!door.getState()) {
-                door.openDoor();
-                oled.showOpen_door();
-                oled.updatePrevious();
+            if (!door.get_state()) {
+                door.open_door();
+                oled.show_open_door();
+                oled.update_previous();
             }
         } else if (st == "off") {
-            if (door.getState()) {
-                door.closeDoor();
-                oled.showClose_door();
-                oled.updatePrevious();
+            if (door.get_state()) {
+                door.close_door();
+                oled.show_close_door();
+                oled.update_previous();
             }
         } else {
             Serial.println("❌ Trạng thái không hợp lệ!");
             Serial.println("Trạng thái: " + st);
         }
 
-        String pw = downloadData(did + "/password");
-        door.updatePassword(pw);
+        String pw = download_data(did + "/password");
+        door.update_password(pw);
     }
 }
 
-void allDoor() {
-    StreamDoorData();
+void all_door() {
+    stream_door_data();
 
-    if (door.checkCard()) {
-        if (door.getState()) {
-            //door.closeDoor();
-            door.updateToFB();
-            oled.showClose_door();
-            oled.updatePrevious();
+    if (door.check_card()) {
+        if (door.get_state()) {
+            //door.close_door();
+            door.update_to_FB();
+            oled.show_close_door();
+            oled.update_previous();
             
-            isTypePW = false;
+            is_type_PW = false;
         } else {
-            door.openDoor();
-            oled.showAccessGranted();
-            oled.updatePrevious();
-            door.updateToFB();
-            isTypePW = false;
+            door.open_door();
+            oled.show_access_granted();
+            oled.update_previous();
+            door.update_to_FB();
+            is_type_PW = false;
         }
     }
 
     String key = "";
-    if (xQueueReceive(keyQueue, &key, 0) == pdTRUE) {
-        isTypePW = true;
+    if (xQueueReceive(key_queue, &key, 0) == pdTRUE) {
+        is_type_PW = true;
         Serial.println(key);
         if (key == "L") {
-            kb.deleteStr();
-            oled.showPassword(kb.getStr());
+            kb. delete_str();
+            oled.show_password(kb.get_str());
         } else if (key == "R") {
-            oled.showPassword(kb.getStr());
-            if (door.getState() && kb.getStr() == "") {
-                door.closeDoor();
-                door.updateToFB();
-                oled.showClose_door();
-                oled.updatePrevious();
-                isTypePW = false;
+            oled.show_password(kb.get_str());
+            if (door.get_state() && kb.get_str() == "") {
+                door.close_door();
+                door.update_to_FB();
+                oled.show_close_door();
+                oled.update_previous();
+                is_type_PW = false;
             } else {
-                if (door.checkPassword(kb.getStr())) {
-                    door.openDoor();
-                    door.updateToFB();
-                    oled.displayOK();
-                    oled.updatePrevious();
-                    isTypePW = false;
+                if (door.check_password(kb.get_str())) {
+                    door.open_door();
+                    door.update_to_FB();
+                    oled.display_ok();
+                    oled.update_previous();
+                    is_type_PW = false;
                 } else {
-                    oled.showWrongPassword();
-                    oled.updatePrevious();
-                    isTypePW = false;
+                    oled.show_wrong_password();
+                    oled.update_previous();
+                    is_type_PW = false;
                 }
             }
-            kb.deleteStr();
+            kb. delete_str();
         } else {
-            kb.updateStr(key);
-            oled.showPassword(kb.getStr());
-            isTypePW = true;
+            kb.update_str(key);
+            oled.show_password(kb.get_str());
+            is_type_PW = true;
         }
         kb.reset();
     }
 
-    if (!isTypePW) {
-        oled.returnHomeScreen();
+    if (!is_type_PW) {
+        oled.return_home_screen();
     }
 }
 
 // Task chạy riêng để đọc bàn phím
 void keyboardTask(void *parameter) {
     while (true) {
-        String key = kb.getPressKey();
+        String key = kb.get_press_key();
         if (key != "null") {
-            xQueueSend(keyQueue, &key, portMAX_DELAY);
+            xQueueSend(key_queue, &key, portMAX_DELAY);
         }
         vTaskDelay(50 / portTICK_PERIOD_MS); // giảm tần suất quét
     }
 }
 
 void setup() {
-    setupwifiFirebase();
+    setup_wifi_firebase();
     Serial.begin(115200);
     door.init();
     oled.init();
     kb.init();
 
     // Tạo hàng đợi cho phím
-    keyQueue = xQueueCreate(10, sizeof(String));
+    key_queue = xQueueCreate(10, sizeof(String));
 
     // Tạo task cho bàn phím
     xTaskCreate(
@@ -132,9 +132,9 @@ void setup() {
         NULL               // Handle
     );
 
-    StreamDoorData();
+    stream_door_data();
 }
 
 void loop() {
-    allDoor(); 
+    all_door(); 
 }

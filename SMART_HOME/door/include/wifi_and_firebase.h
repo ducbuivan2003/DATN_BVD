@@ -25,16 +25,16 @@ extern FirebaseAuth auth;
 extern FirebaseConfig config;
 
 // Cấu hình NTP
-extern const char* ntpServer;
-extern const long  gmtOffset_sec; // GMT+7 (Việt Nam)
-extern const int   daylightOffset_sec;
+extern const char* ntp_server;
+extern const long  gmt_offset_sec; // GMT+7 (Việt Nam)
+extern const int   daylight_offset_sec;
 
 
-void setupwifiFirebase();
-String generateKey();
-String getCurrentTime();
-String downloadData(String path);
-bool uploadData(String path, String data);
-void pushNotification(String text, String deviceId);
+void setup_wifi_firebase();
+String generate_key();
+String get_current_time();
+String download_data(String path);
+bool upload_data(String path, String data);
+void push_notification(String text, String deviceId);
 
 #endif
