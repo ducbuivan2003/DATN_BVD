@@ -21,7 +21,7 @@
 
 //-------------------------------------------------STREAM------------------------------------------------------
 #if 1
-void Stream_Data_from_Fb(std::vector<Device*> &dvList){
+void stream_data_from_FB(std::vector<Device*> &dvList){
   static unsigned long last_time = 0;
 
   unsigned long current_time = millis(); 
@@ -88,7 +88,7 @@ void setup() {
     Serial.println(buttonPins[i]);
   }
   Serial.println("Start Streaming data from Fb");
-  Stream_Data_from_Fb(Device::dvList);
+  stream_data_from_FB(Device::dvList);
   Serial.println("Setup done successfully");
 
 }
@@ -99,9 +99,9 @@ void setup() {
 
 void loop() {
 
-  Stream_Data_from_Fb(Device::dvList);
+  stream_data_from_FB(Device::dvList);
 
-  if(fm52.isDetectedClose())
+  if(fm52.is_detected_close())
   {
     light_hall.turn_on_led();
   }

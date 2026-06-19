@@ -17,7 +17,7 @@ class FM52{
       this->pin = pin;
     //  this->state = false;
     }
-/*     int isDetectedClose(){ 
+/*     int is_detected_close(){ 
       // -1 là chuyển sang k có, 
       //1 là chuyển sang có, 
      // 0 là ko thay đổi
@@ -33,7 +33,7 @@ class FM52{
         return 0;
       }
     } */
-   bool isDetectedClose(){
+   bool is_detected_close(){
      //state = !digitalRead(pin);
      return !digitalRead(pin);
    }
