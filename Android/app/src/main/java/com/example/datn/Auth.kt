@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 var auth = FirebaseAuth.getInstance()
 
-fun registerUser(context: Context, email: String?, password: String?) {  //hàm đăng ký tài khoản
+fun register_user(context: Context, email: String?, password: String?) {  //hàm đăng ký tài khoản
     email?.let { mail ->
         password?.let { pass ->
             auth.createUserWithEmailAndPassword(mail, pass)   //Gọi hàm tạo tài khoản của Firebase
