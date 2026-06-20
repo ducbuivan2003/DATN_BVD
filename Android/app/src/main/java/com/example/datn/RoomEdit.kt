@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.sp
 import com.example.datn.GlobalData.edittingRoom
 
 @Composable
-fun RoomEdit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
+fun Room_edit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
    // roomList.find{it.id==roomId}?.apply { name=nameOfRoom }
 
 
@@ -77,7 +77,7 @@ fun RoomEdit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
                         onTap = {
                             Log.d("ấn nút close", "ấn nút close")
                             //close
-                            BackToHomeScreen()
+                            Back_to_home_screen()
                         },
 
                         )
@@ -95,8 +95,8 @@ fun RoomEdit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
 //                                roomList[edittingRoom.value].name = it
 //                                SaveRoom(it, roomList[edittingRoom.value].id)
 //                            }
-                            if(text1!="") setRoomNameWhenKnowID(edittingRoom.value, text1)
-                            SaveRoom(text1, roomId)
+                            if(text1!="") set_room_name_ID(edittingRoom.value, text1)
+                            Save_room(text1, roomId)
 
                         },
 
@@ -161,7 +161,7 @@ fun RoomEdit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
             onDone = {
                 // khi ok thì làm gì, định nghĩa vào đây
                // if(text1!="") roomList[edittingRoom.value].name=text1
-                if(text1!="") setRoomNameWhenKnowID(edittingRoom.value, text1)
+                if(text1!="") set_room_name_ID(edittingRoom.value, text1)
                 keyboardController?.hide()
             }
         ),
@@ -178,7 +178,7 @@ fun RoomEdit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
         Button(
             onClick ={
                 //xử lý sự kiệns
-                DeleteRoom(roomId)
+                Delete_room(roomId)
                 Log.e("ấn", "click me")
             },
 
@@ -197,11 +197,11 @@ fun RoomEdit(roomId:Int, nameOfRoom:String){// nhiều phòng + add
 
 
 @Composable
-fun AddRoomUI(){
+fun Add_room_UI(){
     var text1 by remember { mutableStateOf("") }//name
     var text2 by remember { mutableStateOf("") }//topic
 
-    var temp_id by remember { mutableStateOf(createRandomID(9, "room")) }
+    var temp_id by remember { mutableStateOf(create_random_ID(9, "room")) }
     var temp_topic by remember { mutableStateOf(temp_id.toString()) }
     // temp_name="Room"+temp_id.toString()
     var temp_name by remember { mutableStateOf("Room"+temp_id.toString()) }
@@ -228,7 +228,7 @@ fun AddRoomUI(){
                     onTap = {
                         Log.d("ấn nút close", "ấn nút close")
                         //close
-                        BackToHomeScreen()
+                        Back_to_home_screen()
                     },
 
                     )
@@ -243,7 +243,7 @@ fun AddRoomUI(){
                         Log.d("ấn nút Lưu thông tin", "ấn nút lưu thông tin")
                         //close
                         if(text1!="") temp_name=text1
-                        SaveRoom(temp_name, temp_id)
+                        Save_room(temp_name, temp_id)
                     },
 
                     )

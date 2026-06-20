@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 
 //    val userId = getCurrentUserId() ?: "default_user"
-fun sendDataToFirebase(status: String, deviceId:Int) {
+fun send_data_to_FB(status: String, deviceId:Int) {
     var  r="room"
     var  d="device"
     for (room in roomList){
@@ -39,7 +39,7 @@ fun sendDataToFirebase(status: String, deviceId:Int) {
 
 
 
-fun listenToFirebase(deviceId: Int, str:String = "status"): Flow<String> = callbackFlow {//Flow + callbackFlow
+fun listen_to_FB(deviceId: Int, str:String = "status"): Flow<String> = callbackFlow {//Flow + callbackFlow
     var roomPath: String? = null
     var devicePath: String? = null
 
@@ -82,27 +82,6 @@ fun listenToFirebase(deviceId: Int, str:String = "status"): Flow<String> = callb
     awaitClose { database.removeEventListener(listener) }
 }
 
-/*
-class DeviceViewModel(deviceId: Int) : ViewModel() {
-    val status: StateFlow<String> = listenToFirebase(deviceId)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Đang tải...")
-}
-
-*/
-
-
-/*//hiển thị
-@Composable
-fun DeviceStatusScreen(deviceId: Int, viewModel: DeviceViewModel = viewModel()) {
-    val status by viewModel.status.collectAsState()
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Trạng thái thiết bị:", fontSize = 20.sp)
-        Text(text = status, fontSize = 18.sp, color = Color.Blue)
-    }
-}
-
- */
 
 
 fun sendDataToFirebase2(path: String, message: String) {
@@ -117,8 +96,7 @@ fun sendDataToFirebase2(path: String, message: String) {
 
 
 
-
-fun listenToFirebase2(path: String): Flow<String> = callbackFlow {
+fun listen_to_FB2(path: String): Flow<String> = callbackFlow {
     val database = FirebaseDatabase.getInstance().reference.child(path)
 
     val listener = object : ValueEventListener {
@@ -146,22 +124,22 @@ statusFlow.collect { status ->
 }
 
 
-fun CreateUserTopic(){
+fun Create_user_topic(){
     if(userId.value!="default_user") {
-        userId.value = isSessionActive() ?: "default_user"
+        userId.value = is_session_active() ?: "default_user"
     }
     val database = FirebaseDatabase.getInstance(URLFB.value)
         .reference.child(userId.value).child("main").child("hello world")
 
-    database.setValue(getActiveUserEmail()).addOnSuccessListener {
+    database.setValue(get_active_user_email()).addOnSuccessListener {
         println("Tạo topic thành công!")
     }.addOnFailureListener {
         println("Lỗi khi tạo topic: ${it.message}")
     }
 }
 
-fun createNewRoomFB(id:Int, name:String){
-    val userId = isSessionActive() ?: "default_user"
+fun create_new_room_FB(id:Int, name:String){
+    val userId = is_session_active() ?: "default_user"
     val database = FirebaseDatabase.getInstance(URLFB.value)
         .reference.child(userId).child(id.toString()).child("roomname")
     val database2 = FirebaseDatabase.getInstance(URLFB.value)
@@ -178,9 +156,9 @@ fun createNewRoomFB(id:Int, name:String){
     }
 }
 
-fun createNewDeviceFB(rid:Int, id:Int, name:String, type:String){
+fun create_new_device_FB(rid:Int, id:Int, name:String, type:String){
     if(userId.value=="default_user") {
-         userId.value = isSessionActive() ?: "default_user"
+         userId.value = is_session_active() ?: "default_user"
     }
     val database = FirebaseDatabase.getInstance(URLFB.value)
         .reference.child(userId.value).child(rid.toString()).child(id.toString()).child("devicename")
@@ -206,7 +184,7 @@ fun createNewDeviceFB(rid:Int, id:Int, name:String, type:String){
 }
 
 
-fun deleteRoomFB(id:Int){
+fun delete_room_FB(id:Int){
     val database = FirebaseDatabase.getInstance().reference
 
 // Xóa toàn bộ nhánh "room1"
@@ -230,7 +208,7 @@ fun deleteRoomFB(id:Int){
 }
 
 
-fun deleteDeviceFB(rid:Int, id:Int){
+fun delete_device_FB(rid:Int, id:Int){
     val database = FirebaseDatabase.getInstance().reference
     val database2 =FirebaseDatabase.getInstance().reference.child(userId.value).child("main").child("newestDevice")
 // Xóa toàn bộ nhánh "room1"
@@ -253,17 +231,17 @@ fun deleteDeviceFB(rid:Int, id:Int){
 }
 
 
-fun getDeviceUpdate() {
+fun get_device_update() {
     var userId = mutableStateOf("default_user")
-    userId.value = isSessionActive() ?: "default_user" // Cập nhật userId nếu có
+    userId.value = is_session_active() ?: "default_user" // Cập nhật userId nếu có
     // Sử dụng CoroutineScope để chạy bất đồng bộ
     CoroutineScope(Dispatchers.IO).launch {
-        listenToFirebase2("${userId.value}/main/newestDevice").collect { status ->
+        listen_to_FB2("${userId.value}/main/newestDevice").collect { status ->
 
             if (status != newestDevice.value) {
                 newestDevice.value = status
 
-                fetchRoom() // Cập nhật lại phòng nếu có thay đổi
+                fetch_room() // Cập nhật lại phòng nếu có thay đổi
                 Log.d("fetched newestDevice", status)
 
             }
@@ -273,17 +251,17 @@ fun getDeviceUpdate() {
     }
 }
 
-fun getRoomUpdate(){
+fun get_room_update(){
     var userId = mutableStateOf("default_user")
-    userId.value = isSessionActive() ?: "default_user" // Cập nhật userId nếu có
+    userId.value = is_session_active() ?: "default_user" // Cập nhật userId nếu có
     // Sử dụng CoroutineScope để chạy bất đồng bộ
     CoroutineScope(Dispatchers.IO).launch {
 
 
-        listenToFirebase2("${userId.value}/main/newestRoom").collect { status ->
+        listen_to_FB2("${userId.value}/main/newestRoom").collect { status ->
             if (status != newestRoom.value) {
                 newestRoom.value = status
-                fetchRoom() // Cập nhật lại phòng nếu có thay đổi
+                fetch_room() // Cập nhật lại phòng nếu có thay đổi
                 Log.d("fetched newestRoom", status)
 
 
@@ -296,7 +274,7 @@ fun getRoomUpdate(){
 /////////////
 fun fetchRoom0() {
     if (userId.value == "default_user") {
-        userId.value = isSessionActive() ?: "default_user"
+        userId.value = is_session_active() ?: "default_user"
     }
 
     val database = FirebaseDatabase.getInstance().reference.child(userId.value)
@@ -363,9 +341,9 @@ fun fetchRoom0() {
 
 
 
-fun fetchRoom() {
+fun fetch_room() {
     if (userId.value == "default_user") {
-        userId.value = isSessionActive() ?: "default_user"
+        userId.value = is_session_active() ?: "default_user"
     }
     roomList.clear()
 
@@ -391,7 +369,7 @@ fun fetchRoom() {
                             Log.e("deviceName", deviceName)
                             val deviceType=deviceSnapshot.child("devicetype").getValue(String::class.java)?:continue
                             Log.e("deviceType", deviceType)
-                            if(!isExisted(deviceId,"dv")){
+                            if(!is_existed(deviceId,"dv")){
                                 dv.add(Device(id = deviceId.toInt(), name = deviceName, type = deviceType, state = false, topic = roomId+"/"+deviceId))
                                 roomList.find { it.id == roomId.toInt() }?.devices?.add(Device(id = deviceId.toInt(), name = deviceName, type = deviceType, state = false, topic = roomId+"/"+deviceId))
                             }
@@ -401,7 +379,7 @@ fun fetchRoom() {
                             Log.e("roomName", roomName)
                         }
                     }
-                    if(!isExisted(roomId, "r")) {
+                    if(!is_existed(roomId, "r")) {
                         roomList.add(Room(id = roomId.toInt(), name = roomName, devices = dv))
                     }
                     refreshHomePage.value=true
@@ -419,7 +397,7 @@ fun fetchRoom() {
     }
 }
 
-fun isExisted(id:String, type:String):Boolean{//dv. r
+fun is_existed(id:String, type:String):Boolean{//dv. r
     if(type=="dv"){
         for(i in roomList){
             for(j in i.devices){

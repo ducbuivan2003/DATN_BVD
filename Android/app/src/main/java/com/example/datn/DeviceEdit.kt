@@ -54,7 +54,7 @@ import androidx.compose.ui.unit.sp
 import com.example.datn.GlobalData.activeRoom
 
 @Composable
-fun DeviceEdit(deviceId:Int, nameOfDevice:String){
+fun Device_edit(deviceId:Int, nameOfDevice:String){
     var text1 by remember { mutableStateOf("") }//name
     var room_id= activeRoom.value
 
@@ -81,7 +81,7 @@ fun DeviceEdit(deviceId:Int, nameOfDevice:String){
                         onTap = {
                             Log.d("ấn nút close", "ấn nút close")
                             //close
-                            BackToHomeScreen()
+                            Back_to_home_screen()
                         },
 
                         )
@@ -97,7 +97,7 @@ fun DeviceEdit(deviceId:Int, nameOfDevice:String){
                             //close
                             if(text1!="") roomList.flatMap { it.devices }.find { it.id == deviceId }?.name=text1
                             //SaveRoom(temp_name, temp_id)
-                            SaveDevice(roomList.flatMap { it.devices }.find { it.id == deviceId }?.name ?:"Null Name",
+                            Save_device(roomList.flatMap { it.devices }.find { it.id == deviceId }?.name ?:"Null Name",
                                 deviceId, roomList.flatMap { it.devices }.find { it.id == deviceId }?.topic ?: "Null Topic",
                                 room_id)
                         },
@@ -181,7 +181,7 @@ Box(
     Button(
         onClick ={
             //xử lý sự kiệns
-            DeleteDevice(deviceId)
+            Delete_device(deviceId)
             Log.e("ấn", "click me")
         },
 
@@ -199,13 +199,13 @@ Box(
 }
 
 @Composable
-fun AddDeviceUI(){
+fun Add_device_UI(){
     val context = LocalContext.current  // Lấy context từ Compose
 
     var typeDV  by remember { mutableStateOf("") }
     var text1 by remember { mutableStateOf("") }//name
     var room_id= activeRoom.value
-    var temp_id by remember { mutableStateOf(createRandomID(9, "room")) }
+    var temp_id by remember { mutableStateOf(create_random_ID(9, "room")) }
 
     var temp_topic by remember { mutableStateOf("null topic") }
     // temp_name="Room"+temp_id.toString()
@@ -233,7 +233,7 @@ fun AddDeviceUI(){
                         onTap = {
                             Log.d("ấn nút close", "ấn nút close")
                             //close
-                            BackToHomeScreen()
+                            Back_to_home_screen()
                         },
 
                         )
@@ -251,9 +251,9 @@ fun AddDeviceUI(){
                             if(text1!="") temp_name=text1
                             //SaveRoom(temp_name, temp_id)
                             if(typeDV!=""){
-                                SaveDevice(temp_name, temp_id, temp_topic, room_id, typeDV)
+                                Save_device(temp_name, temp_id, temp_topic, room_id, typeDV)
                             }else{
-                                showToast(context, "Vui lòng chọn thiết bị")
+                                show_toast(context, "Vui lòng chọn thiết bị")
 
                             }
 

@@ -52,7 +52,7 @@ var roomList: MutableList<Room> = mutableListOf(
 
 )
 
-fun getDevice(deviceId: Int): Device? {
+fun get_device(deviceId: Int): Device? {
     for (room in roomList) {
         for (device in room.devices) {
             if (device.id == deviceId) {

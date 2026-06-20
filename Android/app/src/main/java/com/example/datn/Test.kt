@@ -70,14 +70,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.datn.R
 
 @Composable
 fun TestUI(modifier: Modifier=Modifier){
     Column (modifier = modifier,
         // verticalArrangement = Arrangement.Center
     ) {
-        GreetingText()
+        Greeting_text()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
         Banner()
@@ -86,28 +85,28 @@ fun TestUI(modifier: Modifier=Modifier){
         Painter()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
-        SimpleButton()
+        Simple_button()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
-        PressText()
+        Press_text()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
-        RadioBT()
+        Radio_BT()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
-        TestCheckBox()
+        Test_check_box()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
-        DemoTextField()
+        Demo_text_field()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
         Account()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
         /////BOX
         Box (modifier = Modifier.fillMaxSize()){
-            BoxItem(color = Color.Green, size = 200.dp, modifier=Modifier.matchParentSize())
-            BoxItem(color = Color.Red, size = 150.dp, modifier = Modifier.align(Alignment.BottomEnd))
+            Box_item(color = Color.Green, size = 200.dp, modifier=Modifier.matchParentSize())
+            Box_item(color = Color.Red, size = 150.dp, modifier = Modifier.align(Alignment.BottomEnd))
 
-            BoxItem(color = Color.Blue, modifier = Modifier.align(Alignment.BottomEnd))
+            Box_item(color = Color.Blue, modifier = Modifier.align(Alignment.BottomEnd))
         }
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
@@ -120,9 +119,9 @@ fun TestUI(modifier: Modifier=Modifier){
             horizontalArrangement = Arrangement.SpaceEvenly, // khoảng cách đều
             verticalAlignment = Alignment.CenterVertically //
         ){
-            BoxItem(color = Color.Cyan)
-            BoxItem(color = Color.Yellow)
-            BoxItem(color = Color.Black)
+            Box_item(color = Color.Cyan)
+            Box_item(color = Color.Yellow)
+            Box_item(color = Color.Black)
 
         }
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
@@ -134,13 +133,13 @@ fun TestUI(modifier: Modifier=Modifier){
             , verticalArrangement = Arrangement.SpaceEvenly
             , horizontalAlignment = Alignment.CenterHorizontally
         ){
-            BoxItem(color = Color.Cyan)
-            BoxItem(color = Color.Yellow)
-            BoxItem(color = Color.Black)
+            Box_item(color = Color.Cyan)
+            Box_item(color = Color.Yellow)
+            Box_item(color = Color.Black)
         }
 
         //Search Bar
-        SearchBarDemo()
+        Search_bar_demo()
         Spacer(modifier=Modifier.height(10.dp))// thêm khoảng trắng
 
     }
@@ -149,7 +148,7 @@ fun TestUI(modifier: Modifier=Modifier){
 
 ///// Text
 @Composable
-fun GreetingText(){
+fun Greeting_text(){
     Text(text= "Hello World",
         color = Color.Black,
         textAlign = TextAlign.Center,
@@ -193,7 +192,7 @@ fun Painter(){
 }
 ////Button
 @Composable
-fun SimpleButton(){
+fun Simple_button(){
     var count= remember { mutableStateOf(0) }
     Text(text="value = ${count.value}")
     Button(onClick ={
@@ -214,7 +213,7 @@ fun SimpleButton(){
 }
 // double tap, press
 @Composable
-fun PressText(){
+fun Press_text(){
     var hehe= remember { mutableStateOf("") }
     Text(text = hehe.value)
     Text(text = "test",
@@ -229,7 +228,7 @@ fun PressText(){
 }
 //radio button -> chọn 1 trong nhiều lựa chọn
 @Composable
-fun RadioBT(){
+fun Radio_BT(){
     // chọn 1 trong nhiều lựa chọn
     var selectedNumber by remember { mutableStateOf(0) }
     Row(verticalAlignment = Alignment.CenterVertically,
@@ -269,7 +268,7 @@ fun RadioBT(){
 
 //check box
 @Composable
-fun TestCheckBox(){
+fun Test_check_box(){
     var isCheck1 by remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically,// modifier ở Row
         modifier = Modifier.selectable(
@@ -287,7 +286,7 @@ fun TestCheckBox(){
 //Text Field
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DemoTextField(){
+fun Demo_text_field(){
     var text1 by remember { mutableStateOf("") }
     var keyboardController= LocalSoftwareKeyboardController.current// bàn phím
     TextField(
@@ -395,7 +394,7 @@ fun Account(){
 ////////////////////////LAYOUT
 ///box
 @Composable
-fun BoxItem(color: Color, size: Dp =100.dp, modifier: Modifier = Modifier ){
+fun Box_item(color: Color, size: Dp =100.dp, modifier: Modifier = Modifier ){
     Box(modifier = modifier.
     size(size).
     background(color=color))
@@ -404,7 +403,7 @@ fun BoxItem(color: Color, size: Dp =100.dp, modifier: Modifier = Modifier ){
 
 //Search Bar ROW
 @Composable
-fun SearchBarDemo(){
+fun Search_bar_demo(){
     var keyBoardController = LocalSoftwareKeyboardController.current
     var search1 by remember { mutableStateOf("") }
     Row(verticalAlignment = Alignment.CenterVertically){

@@ -17,25 +17,25 @@ fun Main(){   //taskbar khai báo rồi ở chỗ Main activity
     Column (modifier = Modifier.padding(10.dp)){
         Column (modifier = Modifier.weight(1f)){
             //home, noti, setting, editroom, editdevice, addroom, adddevicem, airconditioner, devicelist
-            if(activeTaskbar.value=="home") HomeScreen()
-            if(activeTaskbar.value=="noti") NotiMain()
-            if(activeTaskbar.value=="setting") SetupUI()
+            if(activeTaskbar.value=="home") Home_screen()
+            if(activeTaskbar.value=="noti") Noti_main()
+            if(activeTaskbar.value=="setting") Setup_UI()
 
             //if(activeTaskbar.value=="devicelist") ControlMain(activeRoom.value,roomList[activeRoom.value].name)
             //if(activeTaskbar.value=="editroom") RoomEdit(edittingRoom.value,roomList[edittingRoom.value].name)
-            if(activeTaskbar.value=="devicelist") ControlMain(activeRoom.value,getRoomName(activeRoom.value))
-            if(activeTaskbar.value=="editroom") RoomEdit(edittingRoom.value,getRoomName(activeRoom.value))
-            if(activeTaskbar.value=="addroom") AddRoomUI()
-            if(activeTaskbar.value=="adddevice") AddDeviceUI()
-            if(activeTaskbar.value=="airconditioner") AirConditionerControl(controlAriconditioner.value,FindName(edittingDevice.value))
-            if(activeTaskbar.value=="door") DoorControl(controlAriconditioner.value,FindName(edittingDevice.value))
-            if(activeTaskbar.value=="editdevice") DeviceEdit(edittingDevice.value, FindName(edittingDevice.value))
+            if(activeTaskbar.value=="devicelist") ControlMain(activeRoom.value,get_room_name(activeRoom.value))
+            if(activeTaskbar.value=="editroom") Room_edit(edittingRoom.value,get_room_name(activeRoom.value))
+            if(activeTaskbar.value=="addroom") Add_room_UI()
+            if(activeTaskbar.value=="adddevice") Add_device_UI()
+            if(activeTaskbar.value=="airconditioner") AirConditioner_control(controlAriconditioner.value,Find_name(edittingDevice.value))
+            if(activeTaskbar.value=="door") Door_control(controlAriconditioner.value,Find_name(edittingDevice.value))
+            if(activeTaskbar.value=="editdevice") Device_edit(edittingDevice.value, Find_name(edittingDevice.value))
 
         }
         Taskbar()
     }
 }
-fun FindName(id:Int):String{
+fun Find_name(id:Int):String{
     for(room in roomList){
         for(device in room.devices){
             if (device.id==id) return device.name

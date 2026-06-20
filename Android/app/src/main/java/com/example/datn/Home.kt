@@ -31,10 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.datn.GlobalData.activeRoom
 import com.example.datn.GlobalData.refreshHomePage
-import com.example.datn.R
 
 @Composable
-fun HomeScreen(){// nhiều phòng + add
+fun Home_screen(){// nhiều phòng + add
     LaunchedEffect (refreshHomePage.value){
         refreshHomePage.value =false
     }
@@ -66,11 +65,11 @@ fun HomeScreen(){// nhiều phòng + add
 //            RoomBox("Phòng Khách",5)
 //            RoomBox("Phòng Khách",6)
             for(room in roomList){
-                RoomBox(room.name, room.id)
+                Room_box(room.name, room.id)
             }
 
-            if(isUserLoggedIn()){
-                AddRoomBox()
+            if(is_user_logged_in()){
+                Add_room_box()
             }
             else{
                 Text(
@@ -87,7 +86,7 @@ fun HomeScreen(){// nhiều phòng + add
 
 
 @Composable
-fun RoomBox(name:String, id:Int){// 1 Room
+fun Room_box(name:String, id:Int){// 1 Room
     var isDelete = remember { mutableStateOf(false) }
 
     Box(contentAlignment = Alignment.Center,
@@ -97,7 +96,7 @@ fun RoomBox(name:String, id:Int){// 1 Room
                     Log.d("click vào phòng", "click")
                     // tap 1 phát
                     //redirect đến cái phòng
-                    GoToDeviceList(id)
+                    Go_to_device_list(id)
                     Log.d("click activeRoom", activeRoom.value.toString())
 
                 },
@@ -120,7 +119,7 @@ fun RoomBox(name:String, id:Int){// 1 Room
                             onTap = {
                                 // sửa ở dưới đây
                                 Log.d("ấn nút chỉnh sửa phòng", "ấn nút chỉnh sửa phòng")
-                                EditRoom(id)
+                                Edit_room(id)
 
                             },
 
@@ -180,7 +179,7 @@ fun RoomBox(name:String, id:Int){// 1 Room
     }
 }
  @Composable
-fun AddRoomBox(){
+fun Add_room_box(){
      Box(contentAlignment = Alignment.Center){
          Image(painter = ColorPainter(Color(0xff2196F3)),
              contentDescription = "",
@@ -197,7 +196,7 @@ fun AddRoomBox(){
                      onTap = {
                          Log.d("ấn nút add phòng", "ấn nút add phòng")
                          // xử lý thêm phòng ở đây
-                         AddRoom()
+                         Add_room()
                      },
                  )
              },

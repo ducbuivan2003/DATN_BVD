@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.datn.GlobalData.activeTaskbar
 import com.example.datn.GlobalData.haveNotis
-import com.example.datn.R
 
 @Composable
 fun Taskbar(){
@@ -46,7 +45,7 @@ fun Taskbar(){
 //                IconTaskbar("setting", activeTaskbar.value == "setting")
                 Button(//home
                     onClick = {
-                      BackToHomeScreen()
+                      Back_to_home_screen()
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -54,12 +53,12 @@ fun Taskbar(){
                     ),
                     elevation = null // Loại bỏ hiệu ứng nổi
                 ) {
-                    IconTaskbar("home", activeTaskbar.value == "home")
+                    Icon_taskbar("home", activeTaskbar.value == "home")
                 }
 
                 Button(//noti
                     onClick = {
-                        BackToNotiScreen()
+                        Back_to_noti_screen()
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -67,13 +66,13 @@ fun Taskbar(){
                     ),
                     elevation = null
                 ) {
-                    IconTaskbar("noti", activeTaskbar.value == "noti", haveNoti = haveNotis.value)
+                    Icon_taskbar("noti", activeTaskbar.value == "noti", haveNoti = haveNotis.value)
                 }
 
 
                 Button(//setting
                     onClick = {
-                        BackToSettingScreen()
+                        Back_to_setting_screen()
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -81,7 +80,7 @@ fun Taskbar(){
                     ),
                     elevation = null
                 ) {
-                    IconTaskbar("setting", activeTaskbar.value == "setting")
+                    Icon_taskbar("setting", activeTaskbar.value == "setting")
                 }
 
             }
@@ -92,9 +91,9 @@ fun Taskbar(){
 
 @Composable
 // lấy dạng icon và trạng thái hoạt động -> Image
-fun IconTaskbar(iconType: String, activeType:Boolean, haveNoti:Boolean=false, size: Dp =36.dp){
+fun Icon_taskbar(iconType: String, activeType:Boolean, haveNoti:Boolean=false, size: Dp =36.dp){
     LaunchedEffect (haveNotis.value){
-        haveNotis.value= !isNotiEmpty()
+        haveNotis.value= !is_noti_empty()
     }
     if(iconType=="home"){
         if(activeType){

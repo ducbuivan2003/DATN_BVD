@@ -17,7 +17,7 @@ import com.example.datn.GlobalData.recentUpdate
 import com.example.datn.GlobalData.userId
 import com.google.firebase.database.FirebaseDatabase
 
-fun Logdata(){
+fun Log_data(){
     Log.d("L - activeTaskbar", GlobalData.activeTaskbar.value)
     Log.d("L - activeRoom", GlobalData.activeRoom.value.toString())
     Log.d("L - haveNotis", GlobalData.haveNotis.value.toString())
@@ -26,7 +26,7 @@ fun Logdata(){
     Log.d("L - edittingDevice", GlobalData.edittingDevice.value.toString())
 }
 
-fun DataReset(){
+fun Data_reset(){
     controlAriconditioner.value = -1
     GlobalData.activeRoom.value = -1
     edittingRoom.value=-1
@@ -35,84 +35,84 @@ fun DataReset(){
     //GlobalData.haveNotis.value = true
 }
 
-fun BackToHomeScreen(){
+fun Back_to_home_screen(){
     GlobalData.activeTaskbar.value = "home"
-    DataReset()
+    Data_reset()
     //GlobalData.haveNotis.value = true
 }
 
-fun BackToNotiScreen(){
+fun Back_to_noti_screen(){
     GlobalData.activeTaskbar.value = "noti"
-    DataReset()
+    Data_reset()
 
     //GlobalData.haveNotis.value = false
 }
 
-fun BackToSettingScreen(){
+fun Back_to_setting_screen(){
     GlobalData.activeTaskbar.value = "setting"
-    DataReset()
+    Data_reset()
 
     //GlobalData.haveNotis.value = true
 }
-fun GoToDeviceList(idRoom:Int){
-    DataReset()
+fun Go_to_device_list(idRoom:Int){
+    Data_reset()
     activeRoom.value=idRoom
     activeTaskbar.value = "devicelist"
-    Logdata()
+    Log_data()
 }
 
-fun GoToAirConditionerControlScreen(id:Int) {//UI
+fun Go_to_AirConditioner_control_screen(id:Int) {//UI
     val temp = activeRoom.value
-    DataReset()
+    Data_reset()
     activeRoom.value = temp
     activeTaskbar.value = "airconditioner"
     controlAriconditioner.value = id
-    Logdata()
+    Log_data()
 }
 
-fun GoToDoorConfig(id: Int){
+fun Go_to_door_config(id: Int){
     val temp = activeRoom.value
-    DataReset()
+    Data_reset()
     activeRoom.value = temp
     activeTaskbar.value = "door"
     controlAriconditioner.value = id
-    Logdata()
+    Log_data()
 }
 
-fun TurnOn(id: Int){
+fun Turn_on(id: Int){
     Log.d("On", "On")
-    SwitchStatePower(id)
+    Switch_state_power(id)
 }
 
 
-fun TurnOff(id: Int){
+fun Turn_off(id: Int){
     Log.d("Off", "Off")
-    SwitchStatePower(id)
+    Switch_state_power(id)
 
 }
 
-fun ChangeTemperature(int: Int, action:String){//up down left right on off
+fun Change_temperature(int: Int, action:String){//up down left right on off
     Log.d("ChangeTemperature", "ChangeTemperature")
     if(action=="up") {
-        ControlData(int, "up")
+        Control_data(int, "up")
     }else if(action=="down"){
-        ControlData(int, "down")
+        Control_data(int, "down")
     }else if(action == "right"){
-        ControlData(int, "right")
+        Control_data(int, "right")
 
     }else if(action == "left"){
-        ControlData(int, "left")
+        Control_data(int, "left")
 
     }
     else if(action == "on"){
-        SwitchStatePower(int)
+        Switch_state_power(int)
     }else if (action=="off"){
-        SwitchStatePower(int)
+        Switch_state_power(int)
     }
 }
 
-fun changePassWord(deviceId: Int, pass: String){
-    val device = getDevice(deviceId)
+fun change_password(deviceId: Int, pass: String){
+    val device = get_device(deviceId)
 
 
     if (device != null) {
@@ -142,55 +142,55 @@ fun changePassWord(deviceId: Int, pass: String){
     }
 }
 
-fun DeleteDevice(id: Int){
+fun Delete_device(id: Int){
     Log.d("DeleteDevice", "DeleteDevice")
     activeTaskbar.value = "devicelist"
-    deleteDeviceFB( activeRoom.value, id)
+    delete_device_FB( activeRoom.value, id)
     roomList.find { it.id == activeRoom.value }?.devices?.removeIf { it.id == id }
 }
 
 
-fun DeleteRoom(id: Int){
+fun Delete_room(id: Int){
     Log.d("DeleteRoom", "DeleteRoom")
-    DataReset()
+    Data_reset()
 
     activeTaskbar= mutableStateOf("home")
-    deleteRoomFB(id)
+    delete_room_FB(id)
     roomList.removeIf { it.id == id }
 }
 
 
-fun AddDevice(){//UI
+fun Add_device(){//UI
     Log.d("AddDevice", "AddDevice")
     activeTaskbar.value="adddevice"
 }
-fun SaveDevice(name: String, id: Int, topic: String, room_id: Int, type: String="Fan"){// chưa xong
+fun Save_device(name: String, id: Int, topic: String, room_id: Int, type: String="Fan"){// chưa xong
 
-    if(activeTaskbar.value=="adddevice")   createNewDevice(name, id, topic, room_id, type)
-    if(activeTaskbar.value=="editdevice") saveEditedDevice(name, id, topic, room_id, type)
+    if(activeTaskbar.value=="adddevice")   create_new_device(name, id, topic, room_id, type)
+    if(activeTaskbar.value=="editdevice") save_edited_device(name, id, topic, room_id, type)
     ///////////////
-    GoToDeviceList(activeRoom.value)
+    Go_to_device_list(activeRoom.value)
     ////
 }
 fun UpdateDevice(deviceId:Int){// nút save cho update
-    GoToDeviceList(activeRoom.value)
+    Go_to_device_list(activeRoom.value)
 }
 
-fun AddRoom(){// xử lý nút bấm + thôi
+fun Add_room(){// xử lý nút bấm + thôi
     Log.d("AddRoom", "AddRoom")
-    DataReset()
+    Data_reset()
     activeTaskbar.value="addroom"
 }
-fun SaveRoom(name:String, id:Int){// chưa xong
+fun Save_room(name:String, id:Int){// chưa xong
 
-    if(activeTaskbar.value=="addroom")   createNewRoom(name, id)
-    if(activeTaskbar.value=="editroom") saveEditedRoom(name, id)
-    BackToHomeScreen()
+    if(activeTaskbar.value=="addroom")   create_new_room(name, id)
+    if(activeTaskbar.value=="editroom") save_edited_room(name, id)
+    Back_to_home_screen()
     //xử lý data
 }
 
 /// xử lý chính cho add room và add device
-fun createNewRoom(name:String, id:Int){
+fun create_new_room(name:String, id:Int){
     val nr="name: "+name+" id: "+id.toString()
     Log.d("create Room", nr)
     //xử lý data
@@ -199,10 +199,10 @@ fun createNewRoom(name:String, id:Int){
     roomList.add(room)
     newestRoom.value=id.toString()
     recentUpdate.value=true
-    createNewRoomFB(id, name)
+    create_new_room_FB(id, name)
     Log.d("roomList", room.toString())
 }
-fun createNewDevice(name: String, id: Int, topic: String, room_id: Int, type: String="fan"){
+fun create_new_device(name: String, id: Int, topic: String, room_id: Int, type: String="fan"){
     val nr="name: "+name+" id: "+id.toString() + "roomId:"+ room_id.toString()+"type: "+type
     Log.d("create Room", nr)
     val topic =room_id.toString()+"/"+id.toString()
@@ -211,20 +211,20 @@ fun createNewDevice(name: String, id: Int, topic: String, room_id: Int, type: St
     room?.devices?.add(device)
     newestDevice.value=id.toString()
     recentUpdate.value=true
-    createNewDeviceFB(room_id, id, name, type)
+    create_new_device_FB(room_id, id, name, type)
 }
 
 //xử lý chính cho edit room và device
- fun saveEditedRoom(name:String, id:Int){
+ fun save_edited_room(name:String, id:Int){
      val nr="name: "+name+" id: "+id.toString()
-    createNewRoomFB(id, name)
+    create_new_room_FB(id, name)
     Log.d("edited Room", nr)
 
  }
- fun saveEditedDevice(name: String, id: Int, topic: String, room_id: Int, type: String="fan"){
+ fun save_edited_device(name: String, id: Int, topic: String, room_id: Int, type: String="fan"){
      val nr="name: "+name+" id: "+id.toString() + "roomId:"+ room_id.toString()+"type: "+type
      Log.d("edited Room", nr)
-     createNewDeviceFB(room_id, id, name, type)
+     create_new_device_FB(room_id, id, name, type)
 
  }
 
@@ -236,16 +236,16 @@ fun createNewDevice(name: String, id: Int, topic: String, room_id: Int, type: St
 fun Edit(idDevice:Int){//deit device
     Log.d("Edit", "Edit")
     val temp= activeRoom.value
-    Logdata()
-    DataReset()
+    Log_data()
+    Data_reset()
     activeRoom.value=temp
     activeTaskbar.value="editdevice"
     edittingDevice.value=idDevice
 }
 
-fun EditRoom(id:Int){
+fun Edit_room(id:Int){
     Log.d("ấn nút chỉnh sửa phòng", "ấn nút chỉnh sửa phòng ${id}")
-    DataReset()
+    Data_reset()
     activeTaskbar.value="editroom"
     edittingRoom.value=id
 
@@ -253,11 +253,11 @@ fun EditRoom(id:Int){
 
 }
 
-fun DeleteNoti(){
+fun Delete_noti(){
     Log.d("DeleteNoti", "DeleteNoti")
-    deleteAllNotificationsFromDTB()
-    ClearNotiList()
-    haveNotis.value= !isNotiEmpty()
+    delete_allNotifications_fromDTB()
+    Clear_noti_list()
+    haveNotis.value= !is_noti_empty()
 }
 
 //////TEST
@@ -266,25 +266,25 @@ fun Test() {
     Log.d("Test", "Test")
     //login_User("ducbuivan2003@gmail.com", "ducbuivan372003")
    // roomList.add(Room(id=1234, name="Phong test", devices=mutableListOf()))
-    getDeviceUpdate()
-    haveNotis.value= !isNotiEmpty()
+    get_device_update()
+    haveNotis.value= !is_noti_empty()
    // sendNotification(MainActivity.appContext, "Thông báo mới", "Nội dung thông báo!")
 
 }
 
-fun SwitchStatePower(deviceId: Int) {
+fun Switch_state_power(deviceId: Int) {
     Log.d("SwitchState", "${deviceId.toString()}")
     // Lấy thiết bị 1 lần
-    val device = getDevice(deviceId)
+    val device = get_device(deviceId)
 
     if (device != null) {
         device.state = !device.state  // Đảo trạng thái của thiết bị
         Log.d("DeviceState", "Device ID: $deviceId, State: ${device.state}")
 
         if (device.state) {
-            sendDataToFirebase("on", deviceId)
+            send_data_to_FB("on", deviceId)
         } else {
-            sendDataToFirebase("off", deviceId)
+            send_data_to_FB("off", deviceId)
         }
     } else {
         Log.d("DeviceState", "Không tìm thấy thiết bị với ID: $deviceId")
@@ -293,10 +293,10 @@ fun SwitchStatePower(deviceId: Int) {
 
 
 var count_=0
-fun ControlData(deviceId: Int, action: String){
+fun Control_data(deviceId: Int, action: String){
     Log.d("Control Action", "${deviceId.toString()}")
     // Lấy thiết bị 1 lần
-    val device = getDevice(deviceId)
+    val device = get_device(deviceId)
 
 
     if(action=="up" || action=="down"||action=="left"|| action=="right"){count_=count_+1}
@@ -335,7 +335,7 @@ fun ControlData(deviceId: Int, action: String){
     }
 }
 
-fun createRandomID(length: Int, type: String = "room"): Int {
+fun create_random_ID(length: Int, type: String = "room"): Int {
     val allowedChars = ('0'..'9')
 
     while (true) { // Lặp cho đến khi tìm được ID hợp lệ
@@ -355,10 +355,10 @@ fun createRandomID(length: Int, type: String = "room"): Int {
 
 
 
-fun showToast(context: Context, message: String) {
+fun show_toast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
- fun setRoomNameWhenKnowID(id: Int, nn:String){
+ fun set_room_name_ID(id: Int, nn:String){ //dat ten phong khi biet ID
      // Tìm phòng có id tương ứng và sửa tên
      for (room in roomList) {
          if (room.id == id) {
@@ -369,7 +369,7 @@ fun showToast(context: Context, message: String) {
      }
      Log.d("Update", "Không tìm thấy phòng với ID $id")
  }
-fun getRoomName(id:Int):String{
+fun get_room_name(id:Int):String{
     for(room in roomList){
         if(room.id==id){
             return room.name

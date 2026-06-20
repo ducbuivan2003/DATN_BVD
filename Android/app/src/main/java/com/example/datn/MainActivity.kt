@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createNotificationChannel(this) // Tạo kênh thông báo
+        create_notification_channel(this) // Tạo kênh thông báo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -51,13 +51,13 @@ class MainActivity : ComponentActivity() {
 
                    // geUpdateNoti()
                    // getDeviceUpdate()
-                    if(isUserLoggedIn()){
+                    if(is_user_logged_in()){
                         val context = LocalContext.current
 
                         LaunchedEffect(Unit) {
-                            geUpdateNoti(context)
-                            getDeviceUpdate()
-                            getRoomUpdate()
+                            get_update_noti(context)
+                            get_device_update()
+                            get_room_update()
                         }
                     }
                     Main()
@@ -108,14 +108,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun Greeting_preview() {
     DATNTheme {
         Greeting("Android")
     }
 }
 
 
-private fun createNotificationChannel(context: Context) {
+private fun create_notification_channel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val channel = NotificationChannel(
             "noti_channel_id",

@@ -51,7 +51,7 @@ import com.example.datn.GlobalData.newestNotiData
 import com.example.datn.GlobalData.notiCount
 
 @Composable
-fun NotiMain() {
+fun Noti_main() {
     val notiListState = remember { mutableStateOf(notiList.toList()) } // State lưu danh sách thông báo
     val currentNoti2 = remember { mutableStateOf("null") } // State lưu thông báo hiện tại
     val currentNoti1 = remember { mutableStateOf("null") } // State lưu thông báo hiện tại
@@ -97,7 +97,7 @@ fun NotiMain() {
                             Log.d("ấn nút xoá thông báo", "ấn nút xoá thông báo")
 
                             // Gọi hàm xoá
-                            DeleteNoti()
+                            Delete_noti()
 
                             // Cập nhật lại UI
                             notiList.clear()
@@ -112,14 +112,14 @@ fun NotiMain() {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         Spacer(modifier = Modifier.padding(15.dp))
         for (noti in notiListState.value.asReversed()) {
-            NotiBox(noti.text, "${noti.hour}:${noti.minute}")
+            Noti_box(noti.text, "${noti.hour}:${noti.minute}")
         }
 
     }
 }
 
 @Composable
-fun NotiBox(text: String, time: String, isRead: Boolean=false){
+fun Noti_box(text: String, time: String, isRead: Boolean=false){
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.height(90.dp)){
         Image(painter = ColorPainter(Color(0xeed9d9d9)),
@@ -152,19 +152,19 @@ fun NotiBox(text: String, time: String, isRead: Boolean=false){
 }
 
 
-fun ClearNotiList(){
+fun Clear_noti_list(){
     notiList.clear()
     notiCount.value = notiList.size
 }
 
-fun isNotiEmpty():Boolean{
+fun is_noti_empty():Boolean{
     Log.d("Firebase", "checking empty")
     return   notiList.isEmpty()
 }
 
-fun deleteAllNotificationsFromDTB() {
+fun delete_allNotifications_fromDTB() {
     if(userId.value=="default_user") {
-        userId.value = isSessionActive() ?: "default_user"
+        userId.value = is_session_active() ?: "default_user"
     }
     val database = FirebaseDatabase.getInstance().reference
     val notiRef = database.child(userId.value).child("main").child("noti")
@@ -183,14 +183,14 @@ fun deleteAllNotificationsFromDTB() {
 
 var notiList = mutableListOf<NotiData>()
 
-fun geUpdateNoti(context: Context) {
+fun get_update_noti(context: Context) {
     var userId = mutableStateOf("default_user")
-    userId.value = isSessionActive() ?: "default_user" // Cập nhật userId nếu có
+    userId.value = is_session_active() ?: "default_user" // Cập nhật userId nếu có
     CoroutineScope(Dispatchers.IO).launch {
-        listenToFirebase2("${userId.value}/main/newestNoti").collect { status ->
+        listen_to_FB2("${userId.value}/main/newestNoti").collect { status ->
             if (status != newestNoti.value) {
                 newestNoti.value = status // Cập nhật giá trị mới nhất
-                fetchNotificationsFromFirebase(context) // Fetch lại noti khi có cập nhật
+                fetch_noti_from_FB(context) // Fetch lại noti khi có cập nhật
             }
             Log.d("status", status)
         }
@@ -198,9 +198,9 @@ fun geUpdateNoti(context: Context) {
 }
 
 
-fun fetchNotificationsFromFirebase(context: Context) {
+fun fetch_noti_from_FB(context: Context) {
     if(userId.value=="default_user") {
-        userId.value = isSessionActive() ?: "default_user"
+        userId.value = is_session_active() ?: "default_user"
     }
     val database = FirebaseDatabase.getInstance().reference
     val notiRef = database.child(userId.value).child("main").child("noti")
@@ -210,7 +210,7 @@ fun fetchNotificationsFromFirebase(context: Context) {
     notiRef.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             notiList.clear() // Clear old list before updating it with new data
-            haveNotis.value= !isNotiEmpty()
+            haveNotis.value= !is_noti_empty()
 
             Log.d("clear", "Cleared noti list")
 
@@ -220,7 +220,7 @@ fun fetchNotificationsFromFirebase(context: Context) {
                 val timeRaw = notiSnapshot.child("time").getValue(String::class.java) ?: "null"
                 Log.d("Firebase", "🔔 Thông báo từ $timeRaw")
                 // Split the timeRaw and parse the data
-                val parsedData = parseTimeData(timeRaw)
+                val parsedData = parse_time_data(timeRaw)
                 val deviceId = parsedData[0] as String
                 val hour = parsedData[1] as String
                 val minute = parsedData[2] as String
@@ -248,7 +248,7 @@ fun fetchNotificationsFromFirebase(context: Context) {
 
 
                 notiList.add(noti)
-                haveNotis.value= !isNotiEmpty()
+                haveNotis.value= !is_noti_empty()
 
                 Log.d("Firebase", "🔔 Thông báo từ $deviceId lúc $hour:$minute ngày $day/$month/$year - $text")
             }
@@ -271,12 +271,12 @@ fun fetchNotificationsFromFirebase(context: Context) {
             Log.d("Notilist", "🔔 ${noti.text} lúc ${noti.hour}:${noti.minute}")
         }
        // val latestNoti = notiList.get(notiList.size-1)
-        val latestNoti = getLatestNoti()
+        val latestNoti = get_latest_noti()
 
         if (latestNoti != null) {
             val title = "${latestNoti.text}"
             val message = "${latestNoti.text} lúc ${latestNoti.hour}:${latestNoti.minute}"
-            showLocalNotification(context, title, message)
+            show_local_notification(context, title, message)
         }
         notiCount.value = notiList.size
         notiCount.value= notiList.size
@@ -285,7 +285,7 @@ fun fetchNotificationsFromFirebase(context: Context) {
 }
 
 // Parsing the time data
-fun parseTimeData(timeRaw: String): List<Any> {
+fun parse_time_data(timeRaw: String): List<Any> {
     val parts = timeRaw.split(".")
     Log.d("parseTimeData", "Parts: $parts")
 
@@ -314,7 +314,7 @@ fun parseTimeData(timeRaw: String): List<Any> {
 }
 
 
-fun showLocalNotification(context: Context, title: String, message: String) {
+fun show_local_notification(context: Context, title: String, message: String) {
     // Android 13+ cần kiểm tra quyền
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
@@ -332,7 +332,7 @@ fun showLocalNotification(context: Context, title: String, message: String) {
     NotificationManagerCompat.from(context).notify(System.currentTimeMillis().toInt(), builder.build())
 }
 
-fun getLatestNoti(): NotiData? {
+fun get_latest_noti(): NotiData? {
     return notiList.maxByOrNull { noti ->
         val year = noti.year.toIntOrNull() ?: 0
         val month = noti.month.toIntOrNull() ?: 0

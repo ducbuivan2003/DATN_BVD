@@ -58,7 +58,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.datn.GlobalData.activeRoom
 import com.example.datn.GlobalData.refreshDevicePage
-import com.example.datn.R
 import kotlinx.coroutines.flow.combine
 
 @Composable
@@ -112,7 +111,7 @@ fun ControlMain(roomId: Int, roomName: String) {
                 }
             }
 
-            AddDeviceBox()
+            Add_device_box()
         }
     }
 }
@@ -121,14 +120,14 @@ fun ControlMain(roomId: Int, roomName: String) {
 @Composable
 fun AirConditioner(name:String, id:Int){
     var isDelete = remember { mutableStateOf(false) }
-    val device = getDevice(id)
+    val device = get_device(id)
     var isOn = remember { mutableStateOf(device?.state ?: false) }
     var temperature= remember { mutableStateOf("20") }
     // Lắng nghe Firebase và cập nhật state của device
     LaunchedEffect(id) {
         combine(
-            listenToFirebase(id),               // Lắng nghe trạng thái "status"
-            listenToFirebase(id, "temperature") // Lắng nghe trạng thái "temperature"
+            listen_to_FB(id),               // Lắng nghe trạng thái "status"
+            listen_to_FB(id, "temperature") // Lắng nghe trạng thái "temperature"
         ) { status, temp ->
             Pair(status, temp)
         }.collect { (status, temp) ->
@@ -150,7 +149,7 @@ fun AirConditioner(name:String, id:Int){
                 onTap = {
                     Log.d("click vào thiết bị điều hoà", "click vào thiết bị điều hoà")
                     // táp ngắn ->  truy cập menu điều hoà
-                    GoToAirConditionerControlScreen(id)
+                    Go_to_AirConditioner_control_screen(id)
                 }
             )
         }
@@ -247,7 +246,7 @@ fun AirConditioner(name:String, id:Int){
                                 detectTapGestures (
                                     onTap = {
                                         Log.d("tắt điều hoà", "tắt điều hoà")
-                                        TurnOff(id)
+                                        Turn_off(id)
                                         isOn.value = !isOn.value
                                     },
                                 )
@@ -261,7 +260,7 @@ fun AirConditioner(name:String, id:Int){
                                 detectTapGestures (
                                     onTap = {
                                         Log.d("bật điều hoà", "bật điều hoà")
-                                        TurnOn(id)
+                                        Turn_on(id)
                                         isOn.value = !isOn.value
 
                                     },
@@ -281,12 +280,12 @@ fun AirConditioner(name:String, id:Int){
 @Composable
 fun Fan(name: String, id: Int) {
     var isDelete = remember { mutableStateOf(false) }
-    val device = getDevice(id)
+    val device = get_device(id)
     var isOn = remember { mutableStateOf(device?.state ?: false) }
 
     // Lắng nghe Firebase và cập nhật state của device
     LaunchedEffect(id) {
-        listenToFirebase(id).collect { status ->
+        listen_to_FB(id).collect { status ->
             device?.state = (status == "on")  // Cập nhật vào device.state trước
             isOn.value = device?.state ?: false  // Cập nhật vào isOn
         }
@@ -383,10 +382,10 @@ fun Fan(name: String, id: Int) {
                                 onTap = {
                                     if (isOn.value) {
                                         Log.d("tắt quạt", "tắt quạt")
-                                        TurnOff(id)
+                                        Turn_off(id)
                                     } else {
                                         Log.d("bật quạt", "bật quạt")
-                                        TurnOn(id)
+                                        Turn_on(id)
                                     }
                                     isOn.value = !isOn.value
                                 }
@@ -402,12 +401,12 @@ fun Fan(name: String, id: Int) {
 @Composable
 fun Light(name: String, id: Int) {
     var isDelete = remember { mutableStateOf(false) }
-    val device = getDevice(id)
+    val device = get_device(id)
     var isOn = remember { mutableStateOf(device?.state ?: false) }
 
     // Lắng nghe Firebase và cập nhật state của device
     LaunchedEffect(id) {
-        listenToFirebase(id).collect { status ->
+        listen_to_FB(id).collect { status ->
             device?.state = (status == "on")  // Cập nhật vào device.state trước
             isOn.value = device?.state ?: false  // Cập nhật vào isOn
         }
@@ -503,10 +502,10 @@ fun Light(name: String, id: Int) {
                                 onTap = {
                                     if (isOn.value) {
                                         Log.d("tắt quạt", "tắt quạt")
-                                        TurnOff(id)
+                                        Turn_off(id)
                                     } else {
                                         Log.d("bật quạt", "bật quạt")
-                                        TurnOn(id)
+                                        Turn_on(id)
                                     }
                                     isOn.value = !isOn.value
                                 }
@@ -528,12 +527,12 @@ fun Light(name: String, id: Int) {
 //cửa
 fun Door(name:String, id: Int){
     var isDelete = remember { mutableStateOf(false) }
-    val device = getDevice(id)
+    val device = get_device(id)
     var isOn = remember { mutableStateOf(device?.state ?: false) }
 
     // Lắng nghe Firebase và cập nhật state của device
     LaunchedEffect(id) {
-        listenToFirebase(id).collect { status ->
+        listen_to_FB(id).collect { status ->
             device?.state = (status == "on")  // Cập nhật vào device.state trước
             isOn.value = device?.state ?: false  // Cập nhật vào isOn
         }
@@ -552,7 +551,7 @@ fun Door(name:String, id: Int){
                 },
                 onTap = {
                     Log.d("click vào cửa", "click vào cửa")
-                    GoToDoorConfig(id)
+                    Go_to_door_config(id)
                 }
             )
         }
@@ -634,10 +633,10 @@ fun Door(name:String, id: Int){
                                 onTap = {
                                     if (isOn.value) {
                                         Log.d("đóng cửa", "đóng cửa")
-                                        TurnOff(id)
+                                        Turn_off(id)
                                     } else {
                                         Log.d("mở cửa", "mở cửa")
-                                        TurnOn(id)
+                                        Turn_on(id)
                                     }
                                     isOn.value = !isOn.value
                                 }
@@ -650,7 +649,7 @@ fun Door(name:String, id: Int){
 }
 
 @Composable
-fun AddDeviceBox(){
+fun Add_device_box(){
     Box(contentAlignment = Alignment.Center){
         Image(painter = ColorPainter(Color(0xff2196F3)),
             contentDescription = "",
@@ -669,7 +668,7 @@ fun AddDeviceBox(){
                         onTap = {
                             Log.d("ấn nút add device", "ấn nút add device")
                             // xử lý thêm phòng ở đây
-                            AddDevice()
+                            Add_device()
                         },
                     )
                 },
@@ -690,13 +689,13 @@ fun AddDeviceBox(){
 ////////////////////// Menu điều hoà
 
 @Composable
-fun AirConditionerControl(id: Int, name: String) {
-    val device = getDevice(id)
+fun AirConditioner_control(id: Int, name: String) {
+    val device = get_device(id)
     var isOn = remember { mutableStateOf(device?.state ?: false) }
 
     // Lắng nghe Firebase và cập nhật state của device
     LaunchedEffect(id) {
-        listenToFirebase(id).collect { status ->
+        listen_to_FB(id).collect { status ->
             device?.state = (status == "on")  // Cập nhật vào device.state trước
             isOn.value = device?.state ?: false  // Cập nhật vào isOn
         }
@@ -732,7 +731,7 @@ fun AirConditionerControl(id: Int, name: String) {
                     .align(Alignment.TopEnd)
                     .clickable {
                         Log.d("ấn nút Lưu thông tin", "ấn nút lưu thông tin")
-                        GoToDeviceList(activeRoom.value)
+                        Go_to_device_list(activeRoom.value)
                     }
             )
         }
@@ -745,9 +744,9 @@ fun AirConditionerControl(id: Int, name: String) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // **Nút UP**
-            ScalableImage(R.drawable.up) {
+            Scalable_image(R.drawable.up) {
                 Log.d("bấm lên", "bấm lên")
-                ChangeTemperature(id, "up")
+                Change_temperature(id, "up")
             }
 
             Row(
@@ -757,42 +756,42 @@ fun AirConditionerControl(id: Int, name: String) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 // **Nút LEFT**
-                ScalableImage(R.drawable.leftblack) {
+                Scalable_image(R.drawable.leftblack) {
                     Log.d("bấm trái", "bấm trái")
-                    ChangeTemperature(id, "left")
+                    Change_temperature(id, "left")
                 }
 
                 // **Nút POWER**
-                ScalableImage(if (isOn.value) R.drawable.poweron else R.drawable.powerblack) {
+                Scalable_image(if (isOn.value) R.drawable.poweron else R.drawable.powerblack) {
                     Log.d("bấm nguồn", "bấm nguồn")
                     isOn.value = !isOn.value
-                    ChangeTemperature(id, if (isOn.value) "on" else "off")
+                    Change_temperature(id, if (isOn.value) "on" else "off")
                 }
 
                 // **Nút RIGHT**
-                ScalableImage(R.drawable.rightblack) {
+                Scalable_image(R.drawable.rightblack) {
                     Log.d("bấm phải", "bấm phải")
-                    ChangeTemperature(id, "right")
+                    Change_temperature(id, "right")
                 }
             }
 
             // **Nút DOWN**
-            ScalableImage(R.drawable.down) {
+            Scalable_image(R.drawable.down) {
                 Log.d("bấm xuống", "bấm xuống")
-                ChangeTemperature(id, "down")
+                Change_temperature(id, "down")
             }
         }
     }
 }
 
 @Composable
-fun DoorControl(id:Int, name:String){
-    val device = getDevice(id)
+fun Door_control(id:Int, name:String){
+    val device = get_device(id)
     val context = LocalContext.current  // Lấy context từ Compose
 
     val isChangePass = remember { mutableStateOf(false) }
     LaunchedEffect(id) {
-        listenToFirebase(id,"password").collect {
+        listen_to_FB(id,"password").collect {
             password -> device?.password = password
             isChangePass.value=!isChangePass.value
 
@@ -830,7 +829,7 @@ fun DoorControl(id:Int, name:String){
                     .align(Alignment.TopEnd)
                     .clickable {
                         Log.d("ấn nút Lưu thông tin", "ấn nút lưu thông tin")
-                        GoToDeviceList(activeRoom.value)
+                        Go_to_device_list(activeRoom.value)
                     }
             )
         }
@@ -898,14 +897,14 @@ fun DoorControl(id:Int, name:String){
                 onClick ={
                     //xử lý sự kiện
                     if(text1!="" && text1.all { it.isDigit() }){
-                        changePassWord(id, text1)
+                        change_password(id, text1)
                         isChangePass.value=!isChangePass.value
-                        showToast(context, "Đổi mật khẩu thành công")
-                        GoToDeviceList(activeRoom.value)
+                        show_toast(context, "Đổi mật khẩu thành công")
+                        Go_to_device_list(activeRoom.value)
 
 
                     }else{
-                        showToast(context, "Mật khẩu phải là chuỗi số")
+                        show_toast(context, "Mật khẩu phải là chuỗi số")
                     }
                     Log.e("ấn", "click me")
                 },
@@ -928,7 +927,7 @@ fun DoorControl(id:Int, name:String){
 }
 
 @Composable
-fun ScalableImage(imageRes: Int, onClick: () -> Unit) {
+fun Scalable_image(imageRes: Int, onClick: () -> Unit) {
     var isPressed = remember { mutableStateOf(false) }
 
     val scale = animateFloatAsState(

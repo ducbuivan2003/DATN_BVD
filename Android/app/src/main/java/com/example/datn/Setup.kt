@@ -42,12 +42,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SetupUI() {
+fun Setup_UI() {
     var temp_email = remember { mutableStateOf("") }
     var temp_pw= remember { mutableStateOf("") }
     val context = LocalContext.current  // Lấy context từ Compose
 
-    var AuthState = remember { mutableStateOf(isUserLoggedIn())}
+    var AuthState = remember { mutableStateOf(is_user_logged_in())}
     var AuthState2 = remember { mutableStateOf("dk") }// trạng thái đăng ký, đăng nhập, quên mk, đổi mk
     LaunchedEffect(AuthState.value) { }
     LaunchedEffect (AuthState2.value){}
@@ -88,14 +88,14 @@ fun SetupUI() {
 
             // nếu đã login thì hiện nút đăng xuất
 
-        if(isUserLoggedIn()){
+        if(is_user_logged_in()){
             Column (
                 modifier = Modifier.padding(top = 40.dp).fillMaxWidth(),
             ){
 
-                Text(text="Email: ${getActiveUserEmail()}\n",
+                Text(text="Email: ${get_active_user_email()}\n",
                     fontSize = 18.sp,)
-                Text(text="ID: ${isSessionActive()}",
+                Text(text="ID: ${is_session_active()}",
                     fontSize = 18.sp,)
             }
 
@@ -105,9 +105,9 @@ fun SetupUI() {
                 contentAlignment = Alignment.Center
             ){
                 //bt
-                customTextButton("Đăng xuất"){
+                custom_text_button("Đăng xuất"){
                     logout_User()
-                    AuthState.value=isUserLoggedIn()
+                    AuthState.value=is_user_logged_in()
                 }
             }
 
@@ -120,12 +120,12 @@ fun SetupUI() {
                 horizontalAlignment = Alignment.CenterHorizontally // Canh giữa ngang
             ){
                     if(AuthState2.value!="mk"){
-                        CustomTextField("email"){
+                        Custom_text_field("email"){
                             Log.e("click", it)
                             temp_email.value=it.trim().lowercase()
 
                         }
-                        CustomTextField("password") {
+                        Custom_text_field("password") {
                             Log.e("click", it)
                             temp_pw.value=it
                     }
@@ -133,7 +133,7 @@ fun SetupUI() {
 
                 Spacer(modifier = Modifier.height(5.dp))
                 if(AuthState2.value=="dn"){
-                    otherChoise("Đăng ký", "Quên mật khẩu",
+                    other_choise("Đăng ký", "Quên mật khẩu",
                         onClick1 = {
                             AuthState2.value="dk"
                         },
@@ -141,23 +141,23 @@ fun SetupUI() {
                             AuthState2.value="mk"
                         }
                     )
-                    customTextButton("Đăng Nhập") {
+                    custom_text_button("Đăng Nhập") {
                         if(temp_pw.value=="" || temp_email.value==""){
-                            showToast(context, "email hoặc password đang trống")
+                            show_toast(context, "email hoặc password đang trống")
                         }
                         else{
                             Log.d("Login Info", "Email: ${temp_email.value}, Password: ${temp_pw.value}")
                             login_User(temp_email.value, temp_pw.value)
                             CoroutineScope(Dispatchers.Main).launch {
                                 delay(1000) // Đợi một chút để trạng thái cập nhật
-                                showToast(context, AuthMsg.value)
-                                AuthState.value = isUserLoggedIn()
+                                show_toast(context, AuthMsg.value)
+                                AuthState.value = is_user_logged_in()
                             }
                         }
                     }
                 }
                 else if(AuthState2.value=="dk"){
-                    otherChoise(
+                    other_choise(
                         "Đăng nhập", "Quên mật khẩu",
                         onClick1 = {
                             AuthState2.value="dn"
@@ -166,9 +166,9 @@ fun SetupUI() {
                             AuthState2.value="mk"
                         }
                     )
-                    customTextButton("Đăng Ký") {
+                    custom_text_button("Đăng Ký") {
                         if(temp_pw.value=="" || temp_email.value==""){
-                            showToast(context, "email hoặc password đang trống")
+                            show_toast(context, "email hoặc password đang trống")
                         }
                         else {
                             Log.d("Signin Info", "Email: ${temp_email.value}, Password: ${temp_pw.value}")
@@ -179,7 +179,7 @@ fun SetupUI() {
                 }
                 else if(AuthState2.value=="mk"){
 
-                    CustomTextField("email"){
+                    Custom_text_field("email"){
                         Log.e("click", it)
                         temp_email.value=it.trim().lowercase()
 
@@ -189,7 +189,7 @@ fun SetupUI() {
 
                     /////////
 
-                    otherChoise(
+                    other_choise(
                         "Đăng nhập", "Đăng ký",
                         onClick1 = {
                             AuthState2.value="dn"
@@ -198,9 +198,9 @@ fun SetupUI() {
                             AuthState2.value="dk"
                         }
                     )
-                    customTextButton("Gửi yêu cầu") {
+                    custom_text_button("Gửi yêu cầu") {
 
-                        requestPasswordReset(temp_email.value, context)
+                        request_password_reset(temp_email.value, context)
                         AuthState2.value="dn"
                         ////cái này xử lý quên mật khẩu
                     }
@@ -223,7 +223,7 @@ fun SetupUI() {
 
 
 @Composable
-fun CustomTextField(
+fun Custom_text_field(
     label: String,
     onDone: (String) -> Unit
 ) {
@@ -251,7 +251,7 @@ fun CustomTextField(
 }
 
 @Composable
-fun customTextButton(
+fun custom_text_button(
     text: String,
     onClick: () -> Unit
 ){
@@ -273,7 +273,7 @@ fun customTextButton(
 
 
 @Composable
-fun otherChoise(
+fun other_choise(
     str1: String,
     str2: String,
     onClick1: () -> Unit,
